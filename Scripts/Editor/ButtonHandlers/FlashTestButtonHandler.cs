@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Grids;
-using Grids.LedFunctions;
+using JoeGatling.ButtonGrids;
+using JoeGatling.ButtonGrids.LedFunctions;
 using UnityEngine;
 
-namespace Grids.ButtonHandlers
+namespace JoeGatling.ButtonGrids.ButtonHandlers
 {
     public class FlashTestButtonHandler : IButtonHandler
     {

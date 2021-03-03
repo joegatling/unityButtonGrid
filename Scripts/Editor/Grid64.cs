@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using UnityEditor;
 
-namespace Grids
+namespace JoeGatling.ButtonGrids
 {
     public class Grid64
     {

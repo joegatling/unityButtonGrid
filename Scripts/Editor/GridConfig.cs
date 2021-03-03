@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using JoeGatling.ButtonGrids.ButtonHandlers;
 
-namespace Grids
+namespace JoeGatling.ButtonGrids
 {
     [CreateAssetMenu(menuName = "Joe/Grids/Grid Config")]
     public class GridConfig : ScriptableObject

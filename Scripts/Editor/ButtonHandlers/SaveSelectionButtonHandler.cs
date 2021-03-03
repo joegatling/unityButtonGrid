@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 
-namespace Grids.ButtonHandlers
+namespace JoeGatling.ButtonGrids.ButtonHandlers
 {
     [System.Serializable]
     public class SaveSelectionButtonHandler : IButtonHandler
