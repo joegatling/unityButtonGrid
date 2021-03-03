@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-namespace Grids.ButtonHandlers
+namespace JoeGatling.ButtonGrids.ButtonHandlers
 {    
     [System.Serializable]
     public class TogglePlayButtonHandler : IButtonHandler

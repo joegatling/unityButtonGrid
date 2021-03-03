@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Grids.LedFunctions;
+using JoeGatling.ButtonGrids.LedFunctions;
 
-namespace Grids
+namespace JoeGatling.ButtonGrids
 {
     public class GlowingButton
     {

@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Grids;
+using JoeGatling.ButtonGrids;
+using JoeGatling.ButtonGrids.LedFunctions;
 using UnityEngine;
 
-namespace Grids.ButtonHandlers
+
+namespace JoeGatling.ButtonGrids.ButtonHandlers
 {
     public class DeleteStoredDataButtonHandler : IButtonHandler
     {
@@ -18,7 +20,7 @@ namespace Grids.ButtonHandlers
         {
             _button = button;
             _button.onKeyStateChanged += OnButtonStateChanged;
-            _button.ledFunction = Grids.LedFunctions.LedOff.instance;
+            _button.ledFunction = LedFunctions.LedOff.instance;
         }
 
         public void Teardown()
@@ -40,7 +42,7 @@ namespace Grids.ButtonHandlers
             if(state == false)
             {
                 DecrementDeleteButtonCount();
-                _button.ledFunction = Grids.LedFunctions.LedOff.instance;
+                _button.ledFunction = LedOff.instance;
             }
             else
             {

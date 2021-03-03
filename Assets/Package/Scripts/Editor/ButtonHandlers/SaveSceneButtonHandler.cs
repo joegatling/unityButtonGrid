@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Grids.ButtonHandlers
+namespace JoeGatling.ButtonGrids.ButtonHandlers
 {
     [System.Serializable]
     public class SaveSceneButtonHandler : IButtonHandler

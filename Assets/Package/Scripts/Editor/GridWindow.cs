@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEditor;
 using System.IO.Ports;
 using System.Linq;
+using JoeGatling.ButtonGrids.ButtonHandlers;
 
-namespace Grids
+namespace JoeGatling.ButtonGrids
 {
     public class GridWindow : EditorWindow
     {

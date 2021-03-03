@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using JoeGatling.ButtonGrids.ButtonHandlers;
 
-namespace Grids
+namespace JoeGatling.ButtonGrids
 {
     [InitializeOnLoad]
     public class GridController

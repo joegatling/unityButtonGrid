@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Grids
+namespace JoeGatling.ButtonGrids.ButtonHandlers
 {
     public interface IButtonHandler
     {
