@@ -6,6 +6,6 @@ namespace JoeGatling.ButtonGrids.LedFunctions
 {
     public interface ILedFunction
     {
-        bool GetLedState();
+        bool GetLedState(GlowingButton button);
     }
 }

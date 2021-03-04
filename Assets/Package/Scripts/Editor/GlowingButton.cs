@@ -19,6 +19,11 @@ namespace JoeGatling.ButtonGrids
         private bool _currentKeyState = false;
         private bool _currentLedState = false;
 
+        public int x { get; private set; }
+        public int y { get; private set; }
+        public Vector2Int position => new Vector2Int(x, y);
+        
+
         private LedDelegate _isPressedLedFunction = null;// = new LedDelegate(() => { return key; });
         public LedDelegate isPressedFunction
         {
@@ -34,7 +39,13 @@ namespace JoeGatling.ButtonGrids
 
         }
 
-        public void Update(bool pressedState)
+        public GlowingButton(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
+
+        public void Update(bool pressedState, ILedFunction overrideLedFunction = null)
         {
             if(pressedState != _currentKeyState)
             {
@@ -42,16 +53,16 @@ namespace JoeGatling.ButtonGrids
                 onKeyStateChanged?.Invoke(_currentKeyState);
             }
 
-            UpdateLedFunction();
+            UpdateLedFunction(overrideLedFunction != null ? overrideLedFunction : ledFunction);
         }
 
-        private void UpdateLedFunction()
+        private void UpdateLedFunction(ILedFunction ledFunc = null)
         {
             bool targetLedState = false;
 
-            if(ledFunction != null)
+            if(ledFunc != null)
             {
-                targetLedState =  ledFunction.GetLedState();
+                targetLedState =  ledFunc.GetLedState(this);
             }
 
             if(targetLedState != _currentLedState)

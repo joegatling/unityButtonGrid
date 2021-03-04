@@ -11,7 +11,7 @@ namespace JoeGatling.ButtonGrids.LedFunctions
         public LedOn()
         {}
 
-        public bool GetLedState()
+        public bool GetLedState(GlowingButton button)
         {
             return true;
         }

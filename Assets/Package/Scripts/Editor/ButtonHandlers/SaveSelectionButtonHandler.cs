@@ -7,7 +7,7 @@ using System.Linq;
 namespace JoeGatling.ButtonGrids.ButtonHandlers
 {
     [System.Serializable]
-    public class SaveSelectionButtonHandler : IButtonHandler
+    public class SaveSelectionButtonHandler : IButtonHandler, IDeleteStoredData
     {
         [System.Serializable]
         private class SelectedTransformInfo
@@ -29,7 +29,8 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
         private bool _isInDeleteMode = false;
 
         LedFunctions.LedDelegate _defaultLedFunction = null;
-        
+
+        public bool HasStoredData => _hasSavedData;
 
         public void Initialize(GlowingButton button)        
         {
@@ -43,7 +44,7 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
             _button.ledFunction = _defaultLedFunction;
 
-            DeleteStoredDataButtonHandler.onDeleteStateChanged += OnDeleteStateChanged;
+            DeleteStoredDataButtonHandler.RegisterDeleter(this);
 
             
         }
@@ -56,6 +57,8 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
                 _button.ledFunction = null;
                 _button = null;
             }
+
+            DeleteStoredDataButtonHandler.UnregisterDeleter(this);
 
         }
 
@@ -76,20 +79,8 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
         }
 
-        void OnDeleteStateChanged(bool deleteState)
+        public void OnDeleteStateChanged(bool deleteState)
         {
-            if(deleteState == true)
-            {
-                if(_hasSavedData)
-                {
-                    _button.ledFunction = DeleteStoredDataButtonHandler.deleteModeLedFunction;
-                }
-            }
-            else
-            {
-                _button.ledFunction = _defaultLedFunction;
-            }
-
             _isInDeleteMode = deleteState;
         }
 

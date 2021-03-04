@@ -5,7 +5,7 @@ using UnityEngine;
 namespace JoeGatling.ButtonGrids.ButtonHandlers
 {
     [System.Serializable]
-    public class SaveSceneButtonHandler : IButtonHandler
+    public class SaveSceneButtonHandler : IButtonHandler, IDeleteStoredData
     {
         [SerializeField] Vector3 _position = Vector3.zero;
         [SerializeField] Vector3 _rotation = Vector3.zero;
@@ -18,7 +18,8 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
         private bool _isInDeleteMode = false;
 
         LedFunctions.LedDelegate _defaultLedFunction = null;
-        
+
+        public bool HasStoredData => _hasSavedData;
 
         public void Initialize(GlowingButton button)        
         {
@@ -32,7 +33,7 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
             _button.ledFunction = _defaultLedFunction;
 
-            DeleteStoredDataButtonHandler.onDeleteStateChanged += OnDeleteStateChanged;
+            DeleteStoredDataButtonHandler.RegisterDeleter(this);
         }
 
         public void Teardown()
@@ -44,6 +45,7 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
                 _button = null;
             }
 
+            DeleteStoredDataButtonHandler.UnregisterDeleter(this);
         }
 
         public void Update()
@@ -73,20 +75,8 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
         }
 
-        void OnDeleteStateChanged(bool deleteState)
+        public void OnDeleteStateChanged(bool deleteState)
         {
-            if(deleteState == true)
-            {
-                if(_hasSavedData)
-                {
-                    _button.ledFunction = DeleteStoredDataButtonHandler.deleteModeLedFunction;
-                }
-            }
-            else
-            {
-                _button.ledFunction = _defaultLedFunction;
-            }
-
             _isInDeleteMode = deleteState;
         }
 

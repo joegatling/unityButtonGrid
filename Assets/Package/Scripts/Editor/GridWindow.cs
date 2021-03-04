@@ -175,7 +175,25 @@ namespace JoeGatling.ButtonGrids
                 {
                     GridController.gridConfig.SetButtonHandler(x,y,null);
                 });
+
+                menu.AddItem(new GUIContent("Set this type to all"), false, () =>
+                {
+                    for(int xx = 0; xx < 8; xx++)
+                    {
+                        for(int yy = 0; yy < 8; yy++)
+                        {
+                            if(!(xx == x && yy == y))
+                            {
+                                IButtonHandler newHandler = (IButtonHandler)System.Activator.CreateInstance(currentButtonHandler.GetType());
+                                GridController.gridConfig.SetButtonHandler(xx, yy, newHandler);
+                            }
+
+                        }
+                    }
+                    
+                });
                 menu.AddSeparator("");
+
             }            
 
             for (int i = 0; i < types.Count; i++)
@@ -189,6 +207,8 @@ namespace JoeGatling.ButtonGrids
             }
 
             
+
+
 
             menu.ShowAsContext();
         }        
