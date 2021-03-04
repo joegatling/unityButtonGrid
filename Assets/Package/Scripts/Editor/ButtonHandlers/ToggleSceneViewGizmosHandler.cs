@@ -48,6 +48,7 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
                 if(SceneView.lastActiveSceneView != null)
                 {
                     SceneView.lastActiveSceneView.drawGizmos = !SceneView.lastActiveSceneView.drawGizmos;
+                    SceneView.lastActiveSceneView.Repaint();
                 }
             }
         }
