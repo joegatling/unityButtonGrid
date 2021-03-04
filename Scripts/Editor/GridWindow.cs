@@ -158,9 +158,22 @@ namespace JoeGatling.ButtonGrids
 
         List<System.Type> GetButtonHandlerTypes()
         {
-            //var buttonHandlerTypes = new List<System.Type>();
+            var buttonHandlerTypes = new List<System.Type>();
             var type = typeof(IButtonHandler);
-            return System.AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(p => type.IsAssignableFrom(p) && p.IsClass).ToList();
+
+            foreach(var a in System.AppDomain.CurrentDomain.GetAssemblies())
+            {
+                try 
+                {
+                    buttonHandlerTypes.AddRange(a.GetTypes().Where(p => type.IsAssignableFrom(p) && p.IsClass).ToList());        
+                }
+                catch (System.Exception e)
+                {
+
+                }
+            }
+            return buttonHandlerTypes;
+            //return System.AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(p => type.IsAssignableFrom(p) && p.IsClass).ToList();
         }
         private void ShowButtonHandlerTypeMenu(int x, int y)
         {
