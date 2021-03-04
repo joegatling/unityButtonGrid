@@ -13,15 +13,20 @@ namespace JoeGatling.ButtonGrids.LedFunctions
 
         public float frequency { get; set; }
         
-        
-        public LedFlashing(float frequency)
+        public float xTimeOffset { get; set; }
+        public float yTimeOffset { get; set; }
+
+        public LedFlashing(float frequency, float xTimeOffset = 0, float yTimeOffset = 0)
         {
             this.frequency = frequency;
+
+            this.xTimeOffset = xTimeOffset;
+            this.yTimeOffset = yTimeOffset;
         }
 
-        public bool GetLedState()
+        public bool GetLedState(GlowingButton button)
         {
-            return ((int)(UnityEditor.EditorApplication.timeSinceStartup * frequency) % 2) == 1;
+            return ((int)((UnityEditor.EditorApplication.timeSinceStartup + (button.x * xTimeOffset + button.y * yTimeOffset)) * frequency) % 2) == 1;
         }
     }
 }

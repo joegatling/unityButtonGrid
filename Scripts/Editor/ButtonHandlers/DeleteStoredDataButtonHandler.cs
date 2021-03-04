@@ -9,11 +9,25 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 {
     public class DeleteStoredDataButtonHandler : IButtonHandler
     {
-        public static LedFunctions.ILedFunction deleteModeLedFunction = new LedFunctions.LedPulse(2.0f, 0.6f);
+        public static Vector2Int currentDeletePosition { get; protected set; }
 
-        public static System.Action<bool> onDeleteStateChanged = delegate{};
+        //public static System.Action<bool> onDeleteStateChanged = delegate{};
         private static int __deleteButtonsHeld = 0;
         public static bool isDeleteButtonHeld => __deleteButtonsHeld > 0;
+
+        private static List<IDeleteStoredData> __allDeleters = new List<IDeleteStoredData>();
+
+
+
+        public static void RegisterDeleter(IDeleteStoredData deleter)
+        {
+            __allDeleters.Add(deleter);
+        }
+
+        public static void UnregisterDeleter(IDeleteStoredData deleter)
+        {
+            __allDeleters.Remove(deleter);
+        }
 
         private GlowingButton _button = null;
         public void Initialize(GlowingButton button)
@@ -47,27 +61,41 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
             else
             {
                 IncrementDeleteButtonCount();
-                _button.ledFunction = deleteModeLedFunction;
+                _button.ledFunction = LedOn.instance;
             }
         }        
 
-        private static void IncrementDeleteButtonCount()
+        private void IncrementDeleteButtonCount()
         {
             if(__deleteButtonsHeld == 0)
             {
-                onDeleteStateChanged?.Invoke(true);
+                currentDeletePosition = new Vector2Int(_button.x, _button.y);
+
+                GridController.overrideLedFunction = new LedFunctions.LedDeleteMode();
+
+                for (int i = 0; i < __allDeleters.Count; i++)
+                {
+                    __allDeleters[i].OnDeleteStateChanged(true);
+                }
             }
 
             __deleteButtonsHeld++;
         }
 
-        private static void DecrementDeleteButtonCount()
+        private void DecrementDeleteButtonCount()
         {
             __deleteButtonsHeld = Mathf.Max(0, __deleteButtonsHeld-1);
 
             if(__deleteButtonsHeld == 0)
             {
-                onDeleteStateChanged?.Invoke(false);
+                currentDeletePosition = Vector2Int.zero;
+
+                GridController.overrideLedFunction = null;
+
+                for (int i = 0; i < __allDeleters.Count; i++)
+                {
+                    __allDeleters[i].OnDeleteStateChanged(false);
+                }
             }
         }        
 

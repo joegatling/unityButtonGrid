@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using JoeGatling.ButtonGrids.ButtonHandlers;
+using JoeGatling.ButtonGrids.LedFunctions;
 
 namespace JoeGatling.ButtonGrids
 {
@@ -79,6 +80,9 @@ namespace JoeGatling.ButtonGrids
 
         private static List<GlowingButton> _buttons = new List<GlowingButton>();
 
+        public static ILedFunction overrideLedFunction { get; set; }
+
+
         static GridController()
         {
             EditorApplication.update += Update;
@@ -93,9 +97,12 @@ namespace JoeGatling.ButtonGrids
 
             _wasPlaying = EditorApplication.isPlaying;
             
-            for(int i = 0; i < grid.width * grid.height; i++)
+            for(int y = 0; y < grid.height; y++)
             {
-                _buttons.Add(new GlowingButton());
+                for(int x = 0; x < grid.width; x++)
+                {
+                    _buttons.Add(new GlowingButton(x,y));
+                }                
             }
 
             InitializeAllButtonsHandlers();
@@ -187,7 +194,7 @@ namespace JoeGatling.ButtonGrids
                     var index = y * grid.width + x;
                     var buttonHandler = gridConfig?.GetButtonHandler(x,y);
 
-                    button.Update(grid.GetButtonState(x,y));
+                    button.Update(grid.GetButtonState(x,y), overrideLedFunction);
 
                     // Check to see if the buttonhandler has changed.
                     if(buttonHandler != GetInitializedButtonHandler(x,y))

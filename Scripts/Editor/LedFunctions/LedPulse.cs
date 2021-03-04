@@ -20,9 +20,8 @@ namespace JoeGatling.ButtonGrids.LedFunctions
             this.frequency = frequency;
         }
 
-        public bool GetLedState()
+        public bool GetLedState(GlowingButton button)
         {
-            Debug.Log($"{Mathf.Repeat((float)UnityEditor.EditorApplication.timeSinceStartup * frequency, 1.0f)} > {(1.0f - dutyCycle)}");
             return Mathf.Repeat((float)UnityEditor.EditorApplication.timeSinceStartup * frequency, 1.0f) > (1.0f - dutyCycle);
         }
     }
