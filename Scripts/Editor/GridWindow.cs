@@ -169,7 +169,7 @@ namespace JoeGatling.ButtonGrids
                 }
                 catch (System.Exception e)
                 {
-
+                    Debug.LogError(e);
                 }
             }
             return buttonHandlerTypes;
@@ -189,7 +189,9 @@ namespace JoeGatling.ButtonGrids
                     GridController.gridConfig.SetButtonHandler(x,y,null);
                 });
 
-                menu.AddItem(new GUIContent("Set this type to all"), false, () =>
+                menu.AddSeparator("");
+
+                menu.AddItem(new GUIContent("Expand to all"), false, () =>
                 {
                     for(int xx = 0; xx < 8; xx++)
                     {
@@ -204,6 +206,28 @@ namespace JoeGatling.ButtonGrids
                         }
                     }
                     
+                });
+                menu.AddItem(new GUIContent("Expand to Row"), false, () =>
+                {
+                    for (int xx = 0; xx < 8; xx++)
+                    {
+                        if (!(xx == x))
+                        {
+                            IButtonHandler newHandler = (IButtonHandler)System.Activator.CreateInstance(currentButtonHandler.GetType());
+                            GridController.gridConfig.SetButtonHandler(xx, y, newHandler);
+                        }
+                    }
+                });
+                menu.AddItem(new GUIContent("Expand to Col"), false, () =>
+                {
+                    for (int yy = 0; yy < 8; yy++)
+                    {
+                        if (!(yy == y))
+                        {
+                            IButtonHandler newHandler = (IButtonHandler)System.Activator.CreateInstance(currentButtonHandler.GetType());
+                            GridController.gridConfig.SetButtonHandler(x, yy, newHandler);
+                        }
+                    }
                 });
                 menu.AddSeparator("");
 
