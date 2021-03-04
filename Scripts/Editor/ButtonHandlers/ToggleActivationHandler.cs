@@ -38,23 +38,8 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
         }
 
         public void Update()
-        {
-            if(_button.key == true)
-            {
-                _button.ledFunction = LedFunctions.LedOn.instance;
-            }
-            else
-            {
-                if(EditorApplication.isPlayingOrWillChangePlaymode)
-                {
-                    _button.ledFunction = LedFunctions.LedOn.instance;
-                }
-                else
-                {
-                    _button.ledFunction = LedFunctions.LedOff.instance;
-                }
-            }
-        }
+        { }           
+
 
         protected void OnButtonStateChanged(bool state)
         {

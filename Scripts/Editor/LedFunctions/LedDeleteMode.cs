@@ -20,37 +20,27 @@ namespace JoeGatling.ButtonGrids.LedFunctions
 
         public bool GetLedState(GlowingButton button)
         {
+            if(button.position == DeleteStoredDataButtonHandler.currentDeletePosition)
+            {
+                return true;
+            }
+
             IButtonHandler buttonHandler = GridController.gridConfig.GetButtonHandler(button.x, button.y);
 
-            if(buttonHandler != null)
-            {
-                if(buttonHandler is IDeleteStoredData)
-                {
-                    IDeleteStoredData deleter = buttonHandler as IDeleteStoredData;
+            float time = (float)(UnityEditor.EditorApplication.timeSinceStartup - startTime) * frequency;
+            Vector2 offset = DeleteStoredDataButtonHandler.currentDeletePosition - button.position;
+            time -= offset.magnitude * 0.05f;
 
-                    float time = (float)(UnityEditor.EditorApplication.timeSinceStartup - startTime) * frequency;
-                    Vector2 offset = DeleteStoredDataButtonHandler.currentDeletePosition - button.position;
-                    time -= offset.magnitude * 0.05f;
-
-                    if(deleter.HasStoredData)
-                    {
-                        return time > 0 && (time < dutyCycleNormal || Mathf.Repeat((float)UnityEditor.EditorApplication.timeSinceStartup* frequency, 1) < dutyCycleOn);
-                    }
-                    else
-                    {
-                        return time > 0 && time < dutyCycleNormal;
-                    }
-                }
-                else
-                {
-                    return false; 
-                }                
-            }
-            else
+            if (buttonHandler != null &&
+                buttonHandler is IDeleteStoredData &&
+                (buttonHandler as IDeleteStoredData).HasStoredData)
             {
-                return false;
+                IDeleteStoredData deleter = buttonHandler as IDeleteStoredData;
+                return time > 0 && (time < dutyCycleNormal || Mathf.Repeat((float)UnityEditor.EditorApplication.timeSinceStartup * frequency, 1) < dutyCycleOn);
             }
-            
+
+            return time > 0 && time < dutyCycleNormal;
+
         }
     }
 }
