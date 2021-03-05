@@ -7,7 +7,7 @@ using System.Linq;
 namespace JoeGatling.ButtonGrids.ButtonHandlers
 {    
     [System.Serializable]
-    public class ToggleInspectorLockButtonHandler : IButtonHandler
+    public class ToggleDebugInspectorButtonHandler : IButtonHandler
     {
         private GlowingButton _button = null;
 
@@ -19,7 +19,7 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
             _defaultLedFunction = new LedFunctions.LedDelegate(() =>
             {
-                return UnityEditor.ActiveEditorTracker.sharedTracker.isLocked && LedFunctions.LedFlashing.fast.GetLedState(button);
+                return UnityEditor.ActiveEditorTracker.sharedTracker.inspectorMode == InspectorMode.Debug;
             });
 
             _button = button;
@@ -45,7 +45,7 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
         {
             if(state == true)
             {
-                UnityEditor.ActiveEditorTracker.sharedTracker.isLocked = !UnityEditor.ActiveEditorTracker.sharedTracker.isLocked;
+                UnityEditor.ActiveEditorTracker.sharedTracker.inspectorMode = UnityEditor.ActiveEditorTracker.sharedTracker.inspectorMode == InspectorMode.Normal ? InspectorMode.Debug: InspectorMode.Normal;
                 UnityEditor.ActiveEditorTracker.sharedTracker.ForceRebuild();
             }
         }
