@@ -87,7 +87,7 @@ namespace JoeGatling.ButtonGrids
 
                         if(GridController.grid.isConnected)
                         {
-                            Color buttonColor = GridController.grid.GetLed(x, y) ? Color.blue : (buttonHandler != null ? Color.white : Color.grey);
+                            Color buttonColor = GridController.grid.GetLed(x, y) ? Color.yellow : (buttonHandler != null ? Color.white : Color.grey);
 
                             if(GridController.grid.GetButtonState(x,y))
                             {
@@ -104,7 +104,7 @@ namespace JoeGatling.ButtonGrids
                         }
 
 
-                        if (GUILayout.Button(new GUIContent("", null, typeName), GUILayout.Height(50)))
+                        if (GUILayout.Button(new GUIContent("", null, typeName), GUILayout.Height(Screen.width/8)))
                         { 
                             ShowButtonHandlerTypeMenu(x,y);
                         
