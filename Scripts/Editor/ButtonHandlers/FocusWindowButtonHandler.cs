@@ -23,6 +23,8 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
         private System.Type _focusedWindowType = null;
 
+        private bool isWindowFocused => UnityEditor.EditorWindow.focusedWindow != null && UnityEditor.EditorWindow.focusedWindow.GetType() == _focusedWindowType;
+
         public void Initialize(GlowingButton button)        
         {
             _button = button;
@@ -30,7 +32,8 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
             _defaultLedFunction = new LedFunctions.LedDelegate(() => 
             {
-                return _button.key || _hasSavedData;
+                return _button.key ||
+                       (_hasSavedData && (isWindowFocused && LedFunctions.LedFlashing.slow.GetLedState(button)) || (!isWindowFocused));
             });
 
             _button.ledFunction = _defaultLedFunction;
