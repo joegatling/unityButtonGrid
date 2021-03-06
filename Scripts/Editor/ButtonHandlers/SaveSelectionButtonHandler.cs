@@ -15,7 +15,7 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
             public string root = default;
             public string path = default;
             public string scenePath = default;
-            public bool  isActiveObject = false;
+            public bool isActiveObject = false;
         }
 
         [SerializeReference] Object _activeObject = null;
@@ -32,6 +32,12 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
         public bool HasStoredData => _hasSavedData;
 
+        private bool areObjectsSelected => _hasSavedData &&
+                                           UnityEditor.Selection.objects.Length == _objects.Count &&
+                                          UnityEditor.Selection.objects.Union(_objects).Count() == _objects.Count;
+                                                    
+                            
+
         public void Initialize(GlowingButton button)        
         {
             _button = button;
@@ -39,7 +45,8 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
             _defaultLedFunction = new LedFunctions.LedDelegate(() => 
             {
-                return _button.key || _hasSavedData;
+                return _button.key ||
+                        (_hasSavedData && (areObjectsSelected && LedFunctions.LedFlashing.slow.GetLedState(button)) || !areObjectsSelected);
             });
 
             _button.ledFunction = _defaultLedFunction;
@@ -143,8 +150,6 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
                 if(UnityEditor.Selection.objects.Length != _objects.Count && _selectedTransformInfo.Count > 0)
                 {
-                    Debug.Log("Test");
-
                     GameObject[] foundGameObjects = new GameObject[_selectedTransformInfo.Count];
                     GameObject activeGameObject = null;
 
@@ -165,7 +170,12 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
                                 }
                                 else
                                 {
-                                    foundGameObjects[i] = rootGameObject.transform.Find(transformInfo.path).gameObject;
+                                    var foundObject = rootGameObject.transform.Find(transformInfo.path);
+
+                                    if (foundObject != null)
+                                    {
+                                        foundGameObjects[i] = foundObject.gameObject;
+                                    }
      
                                 }
 
