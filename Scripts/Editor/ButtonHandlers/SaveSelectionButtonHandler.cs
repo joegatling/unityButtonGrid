@@ -46,7 +46,7 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
             _defaultLedFunction = new LedFunctions.LedDelegate(() => 
             {
                 return _button.key ||
-                        (_hasSavedData && (areObjectsSelected && LedFunctions.LedFlashing.slow.GetLedState(button)) || !areObjectsSelected);
+                        (_hasSavedData && ((areObjectsSelected && LedFunctions.LedFlashing.slow.GetLedState(button)) || !areObjectsSelected));
             });
 
             _button.ledFunction = _defaultLedFunction;
