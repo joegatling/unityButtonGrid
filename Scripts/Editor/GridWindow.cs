@@ -103,8 +103,9 @@ namespace JoeGatling.ButtonGrids
                             typeName = buttonHandler.GetType().Name;
                         }
 
+                        float width = Screen.width / EditorGUIUtility.pixelsPerPoint;
 
-                        if (GUILayout.Button(new GUIContent("", null, typeName), GUILayout.Height(Screen.width/8)))
+                        if (GUILayout.Button(new GUIContent("", null, typeName), GUILayout.Height(width / 8)))
                         { 
                             ShowButtonHandlerTypeMenu(x,y);
                         
