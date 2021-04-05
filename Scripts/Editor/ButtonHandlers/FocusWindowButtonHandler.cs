@@ -41,7 +41,10 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
             DeleteStoredDataButtonHandler.RegisterDeleter(this);
 
-            _focusedWindowType = System.Type.GetType(_focusedWindowTypeName);
+            if (!string.IsNullOrEmpty(_focusedWindowTypeName) && _hasSavedData)
+            {
+                _focusedWindowType = System.Type.GetType(_focusedWindowTypeName);
+            }
         }
 
         public void Teardown()
