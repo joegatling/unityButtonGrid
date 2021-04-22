@@ -31,6 +31,8 @@ namespace JoeGatling.ButtonGrids
         public bool isConnected => _port != null && _port.IsOpen;
         private bool _isLedStateDirty = false;
 
+        private bool _hasConnectionError = false;
+
         public void Connect(string portName)
         {
             if (_port != null && _port.IsOpen)
@@ -53,15 +55,30 @@ namespace JoeGatling.ButtonGrids
                 _port.WriteTimeout = 2000;
                 _port.ReadTimeout = -1;
 
-                _port.Open();
-
-                if (_dataRecieveThread == null || _dataRecieveThread.IsAlive == false) 
+                try
                 {
-                    _dataRecieveThread = new Thread(ReadSerialData);
-                    _dataRecieveThread.Start();
+                    _port.Open();
+                    _hasConnectionError = false;
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError(e.Message);
+
+                    _hasConnectionError = true;
+                    _port.Close();
+                    _port = null;
                 }
 
-                Initialize();
+                if (!_hasConnectionError)
+                {
+                    if (_dataRecieveThread == null || _dataRecieveThread.IsAlive == false)
+                    {
+                        _dataRecieveThread = new Thread(ReadSerialData);
+                        _dataRecieveThread.Start();
+                    }
+
+                    Initialize();
+                }
             }
         }
 

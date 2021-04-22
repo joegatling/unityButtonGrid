@@ -12,6 +12,9 @@ namespace JoeGatling.ButtonGrids
     {
         bool _redrawRequred = false;
 
+        Vector2Int _selectedButton = new Vector2Int(0, 0);
+
+
         [MenuItem("Joe/ButtonGrid Window")]
         static void Init()
         {
@@ -75,6 +78,8 @@ namespace JoeGatling.ButtonGrids
             GridController.gridConfig = (GridConfig)EditorGUILayout.ObjectField("Configuration", GridController.gridConfig, typeof(GridConfig), false);
             //EditorGUILayout.ObjectField("Configuration", GridController.grid, typeof(GridConfig), false);
 
+
+
             if(GridController.gridConfig != null)
             {
                 for (int y = 7; y >= 0; y--)
@@ -83,37 +88,91 @@ namespace JoeGatling.ButtonGrids
                     for (int x = 0; x < 8; x++)
                     {
 
-                        IButtonHandler buttonHandler = GridController.gridConfig.GetButtonHandler(x,y);
+                        IButtonHandler buttonHandler = GridController.gridConfig.GetButtonHandler(x, y);
 
-                        if(GridController.grid.isConnected)
+                        Color baseColor = Color.white;
+                        float brightness = 1.0f;
+
+
+                        if (GridController.grid.isConnected)
                         {
-                            Color buttonColor = GridController.grid.GetLed(x, y) ? Color.yellow : (buttonHandler != null ? Color.white : Color.grey);
+                            baseColor = buttonHandler != null ? Color.white : Color.grey;
 
-                            if(GridController.grid.GetButtonState(x,y))
+                            brightness = GridController.grid.GetLed(x, y) ? 1.0f : 0.8f;
+
+                            if (GridController.grid.GetButtonState(x, y))
                             {
-                                buttonColor = Color.Lerp(buttonColor, Color.black, 0.5f);
+                                brightness *= 0.75f;
                             }
-                            
-                            GUI.color = buttonColor;
                         }
 
-                        string typeName = "";
-                        if(buttonHandler != null)
+                        if(buttonHandler == null)
                         {
-                            typeName = buttonHandler.GetType().Name;
+                            brightness *= 0.75f;
                         }
 
-                        float width = Screen.width / EditorGUIUtility.pixelsPerPoint;
-
-                        if (GUILayout.Button(new GUIContent("", null, typeName), GUILayout.Height(width / 8)))
-                        { 
-                            ShowButtonHandlerTypeMenu(x,y);
-                        
+                        if (x == _selectedButton.x && y == _selectedButton.y)
+                        {
+                            baseColor = Color.cyan;
                         }
+
+
+                        GUI.color = Color.Lerp(Color.black, baseColor, brightness);
+
+                       
+
+                        float width = Screen.width / EditorGUIUtility.pixelsPerPoint;                       
+
+                        if (GUILayout.Button(new GUIContent(""), GUILayout.Height(width / 8)))
+                        {
+                            //ShowButtonHandlerTypeMenu(x,y);
+                            _selectedButton = new Vector2Int(x, y);
+                        }
+
+
                     }
                     EditorGUILayout.EndHorizontal();
                 }
             }
+
+            GUI.color = Color.white;
+
+            IButtonHandler selectedButtonHandler = GridController.gridConfig.GetButtonHandler(_selectedButton.x, _selectedButton.y);
+
+            string typeName = "";
+            if (selectedButtonHandler != null)
+            {
+                typeName = $"Type: {selectedButtonHandler.GetType().Name}";
+            }
+            else
+            {
+                typeName = "Select Type...";
+            }
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField($"Button ({_selectedButton.x}, {_selectedButton.y})", EditorStyles.boldLabel);
+
+            if (GUILayout.Button(new GUIContent(typeName)))
+            {
+                ShowButtonHandlerTypeMenu(_selectedButton.x, _selectedButton.y);
+            }
+
+            if (selectedButtonHandler != null)
+            {
+                var editor = Editor.CreateEditor(GridController.gridConfig);
+                var property = editor.serializedObject.FindProperty("_handlers");
+                var handlerProperty = property.GetArrayElementAtIndex(GridController.gridConfig.GridCoordsToIndex(_selectedButton.x, _selectedButton.y));
+                //var editor = selectedButtonHandler.GetEditor();
+
+                if(handlerProperty.hasVisibleChildren)
+                {
+                    EditorGUILayout.PropertyField(handlerProperty, new GUIContent("Properites"), true);
+                }
+
+            }
+
+
+
 
             // if (GridController.grid.isConnected)
             // {
@@ -142,7 +201,11 @@ namespace JoeGatling.ButtonGrids
         {
             GenericMenu menu = new GenericMenu();
 
+#if UNITY_EDITOR_OSX
             var ports = SerialPort.GetPortNames().Where(x => x.Contains("usbmodem")).ToList();
+#else
+            var ports = SerialPort.GetPortNames().ToList();
+#endif
 
             for (int i = 0; i < ports.Count; i++)
             {
@@ -237,7 +300,20 @@ namespace JoeGatling.ButtonGrids
             for (int i = 0; i < types.Count; i++)
             {
                 var type = types[i];
-                menu.AddItem(new GUIContent(type.Name), currentButtonHandler != null && currentButtonHandler.GetType() == type, () =>
+
+                string menuName = type.Name;
+
+                System.Attribute[] attributes = System.Attribute.GetCustomAttributes(type);
+
+                foreach (System.Attribute attr in attributes)
+                {
+                    if (attr is HandlerName)
+                    {
+                        menuName = (attr as HandlerName).name;
+                    }
+                }
+
+                menu.AddItem(new GUIContent(menuName), currentButtonHandler != null && currentButtonHandler.GetType() == type, () =>
                 {
                     IButtonHandler newHandler = (IButtonHandler)System.Activator.CreateInstance(type);
                     GridController.gridConfig.SetButtonHandler(x,y,newHandler);                    
