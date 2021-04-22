@@ -10,6 +10,11 @@ namespace JoeGatling.ButtonGrids
     {
         [SerializeReference] private List<IButtonHandler> _handlers = new List<IButtonHandler>();
 
+        public int GridCoordsToIndex(int x, int y)
+        {
+            return y * 8 + x;
+        }
+
         private void OnValidate()
         {
             if(_handlers.Count > 64)
@@ -22,7 +27,7 @@ namespace JoeGatling.ButtonGrids
         {
             if(x >= 0 && x < 8 && y >= 0 && y < 8)
             {
-                int index = y * 8 + x;
+                int index = GridCoordsToIndex(x, y);
                 
                 while(_handlers.Count <= index)
                 {
@@ -39,9 +44,9 @@ namespace JoeGatling.ButtonGrids
 
         public IButtonHandler GetButtonHandler(int x, int y)
         {
-            int index = y * 8 + x;
+            int index = GridCoordsToIndex(x, y);
 
-            if(_handlers.Count <= index)
+            if (_handlers.Count <= index)
             {
                 return null;
             }
