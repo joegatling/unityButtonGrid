@@ -6,6 +6,7 @@ using UnityEngine;
 namespace JoeGatling.ButtonGrids.ButtonHandlers
 {    
     [System.Serializable]
+    [HandlerName("Play Mode/Step Frame")]
     public class StepButtonHandler : IButtonHandler
     {
         private GlowingButton _button = null;        

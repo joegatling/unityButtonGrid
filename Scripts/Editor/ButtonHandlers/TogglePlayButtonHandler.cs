@@ -6,6 +6,7 @@ using UnityEngine;
 namespace JoeGatling.ButtonGrids.ButtonHandlers
 {    
     [System.Serializable]
+    [HandlerName("Play Mode/Toggle Play Mode")]
     public class TogglePlayButtonHandler : IButtonHandler
     {
         private GlowingButton _button = null;        

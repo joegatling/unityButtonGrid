@@ -7,6 +7,7 @@ using System.Linq;
 namespace JoeGatling.ButtonGrids.ButtonHandlers
 {    
     [System.Serializable]
+    [HandlerName("Game Object/Toggle Activation")]
     public class ToggleActivationHandler : IButtonHandler
     {
         private GlowingButton _button = null;

@@ -7,6 +7,7 @@ using System.Linq;
 namespace JoeGatling.ButtonGrids.ButtonHandlers
 {    
     [System.Serializable]
+    [HandlerName("Scene View/Toggle Gizmos")]
     public class ToggleSceneViewGizmosHandler : IButtonHandler
     {
         private GlowingButton _button = null;

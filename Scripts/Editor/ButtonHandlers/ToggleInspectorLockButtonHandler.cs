@@ -7,6 +7,7 @@ using System.Linq;
 namespace JoeGatling.ButtonGrids.ButtonHandlers
 {    
     [System.Serializable]
+    [HandlerName("Inspector/Toggle Lock")]
     public class ToggleInspectorLockButtonHandler : IButtonHandler
     {
         private GlowingButton _button = null;

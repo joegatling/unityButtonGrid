@@ -6,12 +6,13 @@ using UnityEngine;
 
 namespace JoeGatling.ButtonGrids.ButtonHandlers
 {
+    [HandlerName("Test/Flash Test")]
     public class FlashTestButtonHandler : IButtonHandler
     {
         GlowingButton _button = null;
 
         private float[] _frequencies = { 1.0f, 2.0f, 4.0f, 10.0f};
-        [SerializeField] private int _currentFrequency = 0;
+        [HideInInspector] [SerializeField] private int _currentFrequency = 0;
 
         LedFlashing _flashingLedFunction = null;
         

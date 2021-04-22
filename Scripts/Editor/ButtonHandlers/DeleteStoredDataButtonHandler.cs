@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace JoeGatling.ButtonGrids.ButtonHandlers
 {
+    [HandlerName("Delete Stored Data")]
     public class DeleteStoredDataButtonHandler : IButtonHandler
     {
         public static Vector2Int currentDeletePosition { get; protected set; }
