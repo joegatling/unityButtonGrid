@@ -1,16 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace JoeGatling.ButtonGrids.ButtonHandlers
 {
     [System.Serializable]
+    [HandlerName("Scene View/Save Camera Position")]
     public class SaveSceneButtonHandler : IButtonHandler, IDeleteStoredData
     {
-        [SerializeField] Vector3 _position = Vector3.zero;
-        [SerializeField] Vector3 _rotation = Vector3.zero;
-        [SerializeField] bool _orthographic = false;
-        [SerializeField] bool _hasSavedData = false;
+        [HideInInspector] [SerializeField] Vector3 _position = Vector3.zero;
+        [HideInInspector] [SerializeField] Vector3 _rotation = Vector3.zero;
+        [HideInInspector] [SerializeField] bool _orthographic = false;
+        [HideInInspector] [SerializeField] bool _hasSavedData = false;
 
         private GlowingButton _button = null;
         private double _buttonPressTime = 0;
@@ -87,6 +89,7 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
                 if(_isInDeleteMode)
                 {
                     _hasSavedData = false;
+                    EditorUtility.SetDirty(GridController.gridConfig);
                 }
                 else
                 {
@@ -107,6 +110,8 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
                         sceneView.AlignViewToObject(camera.transform);
                         sceneView.orthographic = _orthographic;
+
+                        EditorUtility.SetDirty(GridController.gridConfig);
                     }
                 }
 

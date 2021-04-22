@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using UnityEditor;
 
 namespace JoeGatling.ButtonGrids.ButtonHandlers
 {
     [System.Serializable]
+    [HandlerName("Window/Focus Window")]
     public class FocusWindowButtonHandler : IButtonHandler, IDeleteStoredData
     {
-        [SerializeField] string _focusedWindowTypeName = null;
-        [SerializeField] bool _hasSavedData = false;
+        [HideInInspector] [SerializeField] string _focusedWindowTypeName = null;
+        [HideInInspector] [SerializeField] bool _hasSavedData = false;
 
         private GlowingButton _button = null;
         private double _buttonPressTime = 0;
@@ -89,6 +91,8 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
                 if(_isInDeleteMode)
                 {
                     _hasSavedData = false;
+
+                    EditorUtility.SetDirty(GridController.gridConfig);
                 }
                 else
                 {
@@ -119,6 +123,8 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
                 _focusedWindowTypeName = _focusedWindowType.AssemblyQualifiedName;
 
                 _hasSavedData = true;
+
+                EditorUtility.SetDirty(GridController.gridConfig);
             }
         }
 

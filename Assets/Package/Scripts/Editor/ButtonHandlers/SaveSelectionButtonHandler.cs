@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using UnityEditor;
 
 namespace JoeGatling.ButtonGrids.ButtonHandlers
 {
     [System.Serializable]
+    [HandlerName("Save Current Selection")]
     public class SaveSelectionButtonHandler : IButtonHandler, IDeleteStoredData
     {
         [System.Serializable]
@@ -18,10 +20,10 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
             public bool isActiveObject = false;
         }
 
-        [SerializeReference] Object _activeObject = null;
-        [SerializeReference] List<Object> _objects = null;
-        [SerializeField] List<SelectedTransformInfo> _selectedTransformInfo = null;
-        [SerializeField] bool _hasSavedData = false;
+        [HideInInspector] [SerializeReference] Object _activeObject = null;
+        [HideInInspector] [SerializeReference] List<Object> _objects = null;
+        [HideInInspector] [SerializeField] List<SelectedTransformInfo> _selectedTransformInfo = null;
+        [HideInInspector] [SerializeField] bool _hasSavedData = false;
 
         private GlowingButton _button = null;
         private double _buttonPressTime = 0;
@@ -139,6 +141,8 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
             }
 
             _hasSavedData = true;
+
+            EditorUtility.SetDirty(GridController.gridConfig);
         }
 
         private void LoadSelection()

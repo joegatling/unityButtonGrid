@@ -6,6 +6,7 @@ using UnityEngine;
 namespace JoeGatling.ButtonGrids.ButtonHandlers
 {    
     [System.Serializable]
+    [HandlerName("Scene View/Align To Main Camera")]
     public class AlignSceneViewToMainCameraButtonHandler : IButtonHandler
     {
         private GlowingButton _button = null;        
