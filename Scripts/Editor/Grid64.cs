@@ -27,6 +27,7 @@ namespace JoeGatling.ButtonGrids
         private readonly object _buttonStateLock = new object();
         private byte[] _buttonStates = new byte[8];
         private byte[] _ledStates = new byte[8];
+        private byte[] _buttonOverrides = new byte[8];
 
         public bool isConnected => _port != null && _port.IsOpen;
         private bool _isLedStateDirty = false;
@@ -87,6 +88,7 @@ namespace JoeGatling.ButtonGrids
             for(int i = 0; i < height; i++)
             {
                 _buttonStates[i] = 0;
+                _buttonOverrides[i] = 0;
             }
 
             SetAllLeds(false);
@@ -178,9 +180,25 @@ namespace JoeGatling.ButtonGrids
         {
             lock (_buttonStateLock)
             {
-                return GetBit(_buttonStates[y], x) == 1;
+                return (GetBit(_buttonStates[y], x) + GetBit(_buttonOverrides[y],x)) > 0;
             }
         }
+        public void SetButtonOverride(int x, int y)
+        {
+            SetBit(ref _buttonOverrides[y], x, 1);
+        }   
+        public void ClearButtonOverride(int x, int y)
+        {
+            SetBit(ref _buttonOverrides[y], x, 0);
+        }     
+
+        public void ClearAllButtonOverrides(int x, int y)
+        {
+            for(int i = 0; i < height; i++)
+            {
+                _buttonOverrides[i] = 0;
+            }        
+        }                     
 
         public bool GetLed(int x, int y)
         {

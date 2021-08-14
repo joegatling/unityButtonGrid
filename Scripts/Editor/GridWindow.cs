@@ -78,7 +78,7 @@ namespace JoeGatling.ButtonGrids
             GridController.gridConfig = (GridConfig)EditorGUILayout.ObjectField("Configuration", GridController.gridConfig, typeof(GridConfig), false);
             //EditorGUILayout.ObjectField("Configuration", GridController.grid, typeof(GridConfig), false);
 
-
+            EditorGUILayout.Space();
 
             if(GridController.gridConfig != null)
             {
@@ -123,7 +123,17 @@ namespace JoeGatling.ButtonGrids
 
                         float width = Screen.width / EditorGUIUtility.pixelsPerPoint;                       
 
-                        if (GUILayout.Button(new GUIContent(""), GUILayout.Height(width / 8)))
+                        string typeDescription = buttonHandler != null ? buttonHandler.GetType().Name: "None";
+
+                        string textToRemove = "ButtonHandler";
+                        if(typeDescription.EndsWith(textToRemove))
+                        {
+                            typeDescription = typeDescription.Substring(0, typeDescription.Length - textToRemove.Length);
+                        }
+
+                        GUIContent buttonContent = new GUIContent("", ObjectNames.NicifyVariableName(typeDescription));
+
+                        if (GUILayout.Button(buttonContent, GUILayout.Height(width / 8)))
                         {
                             //ShowButtonHandlerTypeMenu(x,y);
                             _selectedButton = new Vector2Int(x, y);
@@ -161,13 +171,29 @@ namespace JoeGatling.ButtonGrids
             {
                 var editor = Editor.CreateEditor(GridController.gridConfig);
                 var property = editor.serializedObject.FindProperty("_handlers");
+                property.isExpanded = true;
                 var handlerProperty = property.GetArrayElementAtIndex(GridController.gridConfig.GridCoordsToIndex(_selectedButton.x, _selectedButton.y));
                 //var editor = selectedButtonHandler.GetEditor();
+
+                editor.serializedObject.Update();
 
                 if(handlerProperty.hasVisibleChildren)
                 {
                     EditorGUILayout.PropertyField(handlerProperty, new GUIContent("Properites"), true);
                 }
+
+                EditorGUILayout.Space();
+                
+                if(GUILayout.Button("Simulate Press"))
+                {
+                    GridController.grid.SetButtonOverride(_selectedButton.x, _selectedButton.y);
+                }
+                else
+                {
+                    GridController.grid.ClearButtonOverride(_selectedButton.x, _selectedButton.y);
+                }
+
+                editor.serializedObject.ApplyModifiedProperties();
 
             }
 
@@ -294,7 +320,44 @@ namespace JoeGatling.ButtonGrids
                     }
                 });
                 menu.AddSeparator("");
-
+            }
+            else
+            {
+                menu.AddItem(new GUIContent("Clear all"), false, () =>
+                {
+                    for(int xx = 0; xx < 8; xx++)
+                    {
+                        for(int yy = 0; yy < 8; yy++)
+                        {
+                            if(!(xx == x && yy == y))
+                            {
+                                GridController.gridConfig.SetButtonHandler(xx, yy, null);
+                            }
+                        }
+                    }
+                    
+                });
+                menu.AddItem(new GUIContent("Clear Row"), false, () =>
+                {
+                    for (int xx = 0; xx < 8; xx++)
+                    {
+                        if (!(xx == x))
+                        {
+                            GridController.gridConfig.SetButtonHandler(xx, y, null);
+                        }
+                    }
+                });
+                menu.AddItem(new GUIContent("Clear Col"), false, () =>
+                {
+                    for (int yy = 0; yy < 8; yy++)
+                    {
+                        if (!(yy == y))
+                        {
+                            GridController.gridConfig.SetButtonHandler(x, yy, null);
+                        }
+                    }
+                });
+                menu.AddSeparator("");                
             }            
 
             for (int i = 0; i < types.Count; i++)
