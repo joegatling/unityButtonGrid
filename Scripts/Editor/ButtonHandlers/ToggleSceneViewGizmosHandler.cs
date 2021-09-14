@@ -8,8 +8,16 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 {    
     [System.Serializable]
     [HandlerName("Scene View/Toggle Gizmos")]
-    public class ToggleSceneViewGizmosHandler : IButtonHandler
+    public class ToggleGizmosHandler : IButtonHandler
     {
+        // public enum ViewType
+        // {
+        //     SceneView,
+        //     GameView
+        // };
+
+        //[SerializeField] private ViewType _view = ViewType.SceneView;
+
         private GlowingButton _button = null;
 
         ButtonGrids.LedFunctions.ILedFunction _defaultLedFunction = null;
