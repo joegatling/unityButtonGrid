@@ -82,6 +82,8 @@ namespace JoeGatling.ButtonGrids
 
         public static ILedFunction overrideLedFunction { get; set; }
 
+        public static GlowingButton overrideButton { get; set; }
+
 
         static GridController()
         {
@@ -185,16 +187,29 @@ namespace JoeGatling.ButtonGrids
         {
             grid.Update();
 
+            bool isAnyButtonPressed = false;
+            GlowingButton currentOverrideButton = overrideButton;
 
             for(int y = 0; y < grid.height; y++)
             {
                 for(int x = 0; x < grid.width; x++)
                 {
                     var button = GetButton(x,y);
+
                     var index = y * grid.width + x;
                     var buttonHandler = gridConfig?.GetButtonHandler(x,y);
 
-                    button.Update(grid.GetButtonState(x,y), overrideLedFunction);
+                    var isPressed = grid.GetButtonState(x, y);
+                    isAnyButtonPressed |= isPressed;
+
+                    if (currentOverrideButton == null)
+                    {
+                        button.Update(isPressed, overrideLedFunction);
+                    }
+                    else
+                    {
+                        button.Update(button.key, overrideLedFunction);
+                    }
 
                     // Check to see if the buttonhandler has changed.
                     if(buttonHandler != GetInitializedButtonHandler(x,y))
@@ -209,7 +224,12 @@ namespace JoeGatling.ButtonGrids
 
                     grid.SetLed(x, y, button.led, false);
                 }
-            }      
+            }
+
+            if(currentOverrideButton != null)
+            {
+                currentOverrideButton.Update(isAnyButtonPressed);
+            }
 
             grid.RefreshLedStates();                  
         }         

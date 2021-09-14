@@ -74,16 +74,21 @@ MonoBehaviour:
   - id: 9
   - id: 9
   - id: 9
-  - id: 9
+  - id: 11
   references:
     version: 1
     00000000:
       type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers, asm: JoeGatling.ButtonGrids}
       data:
         _activeObject: {fileID: 0}
-        _objects: []
-        _selectedTransformInfo: []
-        _hasSavedData: 0
+        _objects:
+        - {fileID: 0}
+        _selectedTransformInfo:
+        - root: Main Camera
+          path: 
+          scenePath: Assets/Scenes/SampleScene.unity
+          isActiveObject: 1
+        _hasSavedData: 1
     00000001:
       type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers, asm: JoeGatling.ButtonGrids}
       data:
@@ -120,24 +125,18 @@ MonoBehaviour:
         _selectedTransformInfo: []
         _hasSavedData: 0
     00000006:
-      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers, asm: JoeGatling.ButtonGrids}
-      data:
-        _activeObject: {fileID: 0}
-        _objects: []
-        _selectedTransformInfo: []
-        _hasSavedData: 0
+      type: {class: MaximuzeWindowButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers, asm: JoeGatling.ButtonGrids}
     00000007:
-      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers, asm: JoeGatling.ButtonGrids}
-      data:
-        _activeObject: {fileID: 0}
-        _objects: []
-        _selectedTransformInfo: []
-        _hasSavedData: 0
+      type: {class: DeleteStoredDataButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers, asm: JoeGatling.ButtonGrids}
     00000008:
       type: {class: FlashTestButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers, asm: JoeGatling.ButtonGrids}
       data:
-        _currentFrequency: 0
+        _currentFrequency: 3
     00000009:
       type: {class: , ns: , asm: }
     0000000A:
       type: {class: AlignSceneViewToMainCameraButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers, asm: JoeGatling.ButtonGrids}
+    0000000B:
+      type: {class: ScreenSaverButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers, asm: JoeGatling.ButtonGrids}
+      data:
+        _buttonCycleTime: 2
