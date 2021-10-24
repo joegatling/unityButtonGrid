@@ -53,6 +53,7 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
                     foreach(var g in Selection.gameObjects)
                     {
                         g.SetActive(!allActive);
+                        EditorUtility.SetDirty(g);
                     }
                 }
             }
