@@ -14,8 +14,6 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
         LedFunctions.LedDelegate _defaultLedFunction = null;
 
-        private System.Type _focusedWindowType = null;
-
         private bool isWindowMaximized => UnityEditor.EditorWindow.focusedWindow != null && UnityEditor.EditorWindow.focusedWindow.maximized == true;
 
         public void Initialize(GlowingButton button)        
