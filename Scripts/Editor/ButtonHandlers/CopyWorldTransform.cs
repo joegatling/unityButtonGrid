@@ -7,12 +7,13 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 {
     [System.Serializable]
     [HandlerName("Transform/Copy World Transform")]
-    public class CopyWorldTransformButtonHandler : IButtonHandler
+    public class CopyWorldTransformButtonHandler : IButtonHandler, IDeleteStoredData
     {
         public enum OperationType
         {
             Copy,
-            Paste
+            Paste,
+            PasteOnce
         }
         
         [SerializeField] private OperationType _operationType = OperationType.Copy;
@@ -25,6 +26,8 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
         private GlowingButton _button = null;
         LedFunctions.LedDelegate _defaultLedFunction = null;
 
+        private bool _isInDeleteMode = false;
+        
         public void Initialize(GlowingButton button)        
         {
             _button = button;
@@ -34,7 +37,7 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
             {
                 if (_operationType == OperationType.Copy)
                 {
-                    return Selection.activeGameObject != null;
+                    return Selection.activeGameObject != null && (_button.key == false);
                 }
                 else
                 {
@@ -62,6 +65,12 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
         {
             if (state == true)
             {
+                if (_isInDeleteMode)
+                {
+                    _hasCopiedData = false;
+                    return;
+                }
+                
                 if (_operationType == OperationType.Copy)
                 {
                     if (Selection.activeGameObject != null)
@@ -74,7 +83,7 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
                         _hasCopiedData = true;
                     }
                 }
-                else
+                else // Paste or PasteOnce
                 {
                     if (Selection.activeGameObject != null && _hasCopiedData)
                     {
@@ -93,9 +102,21 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
                         );
                         
                         EditorUtility.SetDirty(transform);
+
+                        if (_operationType == OperationType.PasteOnce)
+                        {
+                            _hasCopiedData = false;
+                        }
                     }
                 }
             }
         }
+
+        public void OnDeleteStateChanged(bool deleteState)
+        {
+            _isInDeleteMode = deleteState;
+        }
+
+        public bool HasStoredData => _hasCopiedData && (_operationType == OperationType.Paste || _operationType == OperationType.PasteOnce);
     }
 }
