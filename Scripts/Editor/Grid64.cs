@@ -18,6 +18,7 @@ namespace JoeGatling.ButtonGrids
 
         private SerialPort _port = default;
         private Thread _dataRecieveThread = null;
+        private volatile bool _shouldStopThread = false;
 
         private readonly object _serialDataLock = new object();
         private string _serialData = "";
@@ -36,10 +37,7 @@ namespace JoeGatling.ButtonGrids
 
         public void Connect(string portName)
         {
-            if (_port != null && _port.IsOpen)
-            {
-                _port.Close();
-            }
+            Disconnect();
 
             if (IsPortAvailable(portName))
             {
@@ -54,7 +52,7 @@ namespace JoeGatling.ButtonGrids
                 _port.NewLine = "\r\n";
 
                 _port.WriteTimeout = 2000;
-                _port.ReadTimeout = -1;
+                _port.ReadTimeout = 1000;
 
                 try
                 {
@@ -72,9 +70,12 @@ namespace JoeGatling.ButtonGrids
 
                 if (!_hasConnectionError)
                 {
+                    _shouldStopThread = false;
+                    
                     if (_dataRecieveThread == null || _dataRecieveThread.IsAlive == false)
                     {
                         _dataRecieveThread = new Thread(ReadSerialData);
+                        _dataRecieveThread.IsBackground = true; // Ensure the thread doesn't block application exit
                         _dataRecieveThread.Start();
                     }
 
@@ -96,17 +97,37 @@ namespace JoeGatling.ButtonGrids
 
         public void Disconnect()
         {
-            if (_port != null && _port.IsOpen)
+            _shouldStopThread = true;
+            
+            if (_dataRecieveThread != null && _dataRecieveThread.IsAlive)
             {
-                _port.Close();
-                _port = null;
-            }
-
-            if (_dataRecieveThread != null)
-            {
-                _dataRecieveThread.Abort();
+                if(!_dataRecieveThread.Join(1000))
+                {
+                    Debug.LogWarning("Data receive thread did not terminate in time, aborting.");
+                    _dataRecieveThread.Abort();
+                }
                 _dataRecieveThread = null;
             }
+
+            if (_port != null)
+            {
+                try
+                {
+                    if (_port.IsOpen)
+                    {
+                        _port.Close();
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogWarning($"Error closing serial port: {e.Message}");
+                }
+                finally
+                {
+                    _port = null;
+                }
+            }
+
         }
 
         public void Update()
@@ -267,10 +288,12 @@ namespace JoeGatling.ButtonGrids
 
         private void ReadSerialData()
         {
-            while (_port != null && _port.IsOpen)
+            while (!_shouldStopThread && _port != null && _port.IsOpen)
             {
                 try
                 {
+                    if(_shouldStopThread) break;
+
                     if (_port.BytesToRead > 0)
                     {
                         string data = _port.ReadLine();
@@ -279,6 +302,10 @@ namespace JoeGatling.ButtonGrids
                         {
                             _serialData = data;
                         }
+                    }
+                    else
+                    {
+                        Thread.Sleep(10); // Sleep to avoid busy waiting
                     }
                 }
                 catch (System.Exception ex)
@@ -292,8 +319,14 @@ namespace JoeGatling.ButtonGrids
                         }
                     }
 
-                    _port.Close();
+                    // Clean up and exit thread
+                    try
+                    {
+                        _port?.Close();
+                    }
+                    catch { }
                     _port = null;
+                    break;
                 }
             }
         }
