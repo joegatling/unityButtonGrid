@@ -110,6 +110,16 @@ namespace JoeGatling.ButtonGrids
             InitializeAllButtonsHandlers();
         }
 
+        private static void OnEditorQuitting()
+        {
+            grid?.Disconnect();
+        }   
+
+        private static void OnBeforeAssemblyReload()
+        {
+            grid?.Disconnect();
+        }
+
         private static void TeardownAllButtonHandlers()
         {
             for(int i = 0; i < _initializedButtonHandlers.Count; i++)
