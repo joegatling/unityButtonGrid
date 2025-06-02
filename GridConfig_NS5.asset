@@ -1,0 +1,377 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85d8c457768e8499886db8faf348c010, type: 3}
+  m_Name: GridConfig_NS5
+  m_EditorClassIdentifier: 
+  _handlers:
+  - rid: 4735600122383564826
+  - rid: 4735600122383564827
+  - rid: 4735600122383564828
+  - rid: 4735600122383564829
+  - rid: 4735600122383564830
+  - rid: 4735600190416748544
+  - rid: 4735600122383564831
+  - rid: 4735600122383564832
+  - rid: 4735600122383564833
+  - rid: 4735600122383564834
+  - rid: 4735600122383564835
+  - rid: 4735600122383564836
+  - rid: 4735600122383564837
+  - rid: 4735600122383564838
+  - rid: 4735600122383564839
+  - rid: 4735600122383564840
+  - rid: 4735600122383564841
+  - rid: 4735600122383564842
+  - rid: 4735600122383564843
+  - rid: 4735600122383564844
+  - rid: 4735600122383564845
+  - rid: 4735600122383564846
+  - rid: 4735600122383564847
+  - rid: 4735600122383564848
+  - rid: 4735600122383564849
+  - rid: 4735600122383564850
+  - rid: 4735600122383564851
+  - rid: 4735600122383564852
+  - rid: 4735600122383564853
+  - rid: 4735600122383564854
+  - rid: 4735600122383564855
+  - rid: 4735600122383564856
+  - rid: 8482869020019130661
+  - rid: 8482869020019130667
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: 8482869157546950767
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: -2
+  - rid: 4735600122383564858
+  - rid: 4735600122383564857
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
+    - rid: 4735600122383564826
+      type: {class: TogglePlayButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data: 
+    - rid: 4735600122383564827
+      type: {class: TogglePauseButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data: 
+    - rid: 4735600122383564828
+      type: {class: StepButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data: 
+    - rid: 4735600122383564829
+      type: {class: CopyWorldTransformButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _operationType: 0
+    - rid: 4735600122383564830
+      type: {class: CopyWorldTransformButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _operationType: 2
+    - rid: 4735600122383564831
+      type: {class: ToggleGizmosHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data: 
+    - rid: 4735600122383564832
+      type: {class: DeleteStoredDataButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data: 
+    - rid: 4735600122383564833
+      type: {class: SaveSceneButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _position: {x: 21.03123, y: 9.531967, z: 12.282908}
+        _rotation: {x: 71.951904, y: 223.59149, z: 0.0022597173}
+        _orthographic: 0
+        _hasSavedData: 0
+    - rid: 4735600122383564834
+      type: {class: SaveSceneButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _position: {x: 20.647692, y: 5.395899, z: 6.001782}
+        _rotation: {x: 41.52786, y: 300.07944, z: 0.00030335775}
+        _orthographic: 0
+        _hasSavedData: 0
+    - rid: 4735600122383564835
+      type: {class: SaveSceneButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _position: {x: 0.7282324, y: 2.7771702, z: -7.649254}
+        _rotation: {x: 41.871555, y: 260.54526, z: 0.00084386376}
+        _orthographic: 0
+        _hasSavedData: 0
+    - rid: 4735600122383564836
+      type: {class: SaveSceneButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _position: {x: 0.89431286, y: 1.8925247, z: -5.8709316}
+        _rotation: {x: 27.77679, y: 209.49431, z: 0.00037633718}
+        _orthographic: 0
+        _hasSavedData: 0
+    - rid: 4735600122383564837
+      type: {class: SaveSceneButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _position: {x: 0, y: 0, z: 0}
+        _rotation: {x: 0, y: 0, z: 0}
+        _orthographic: 0
+        _hasSavedData: 0
+    - rid: 4735600122383564838
+      type: {class: SaveSceneButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _position: {x: 0, y: 0, z: 0}
+        _rotation: {x: 0, y: 0, z: 0}
+        _orthographic: 0
+        _hasSavedData: 0
+    - rid: 4735600122383564839
+      type: {class: SaveSceneButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _position: {x: 0, y: 0, z: 0}
+        _rotation: {x: 0, y: 0, z: 0}
+        _orthographic: 0
+        _hasSavedData: 0
+    - rid: 4735600122383564840
+      type: {class: SaveSceneButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _position: {x: 0, y: 0, z: 0}
+        _rotation: {x: 0, y: 0, z: 0}
+        _orthographic: 0
+        _hasSavedData: 0
+    - rid: 4735600122383564841
+      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _activeObject: {fileID: 0}
+        _objects:
+        - {fileID: 0}
+        _selectedTransformInfo:
+        - root: 'Parent Condition: In [AVAAPA]'
+          path: SMS
+          scenePath: Assets/GameDomains/Warlord/Zones/Stories/AVAAPA/Scenes/Scene_AVAAPA_LO.unity
+          isActiveObject: 1
+        _hasSavedData: 1
+    - rid: 4735600122383564842
+      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _activeObject: {fileID: 0}
+        _objects:
+        - {fileID: 0}
+        _selectedTransformInfo:
+        - root: NavNodes
+          path: 'Node: ReenteredApt [Before Attack]'
+          scenePath: Assets/GameDomains/Warlord/Zones/Stories/AVAAPA/Scenes/Scene_AVAAPA_LO.unity
+          isActiveObject: 1
+        _hasSavedData: 1
+    - rid: 4735600122383564843
+      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _activeObject: {fileID: 0}
+        _objects:
+        - {fileID: 0}
+        _selectedTransformInfo:
+        - root: NavNodes
+          path: 'Node: ReenteredApt [Before Attack]/Prefab_MarkerCamera'
+          scenePath: Assets/GameDomains/Warlord/Zones/Stories/AVAAPA/Scenes/Scene_AVAAPA_LO.unity
+          isActiveObject: 1
+        _hasSavedData: 1
+    - rid: 4735600122383564844
+      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _activeObject: {fileID: 0}
+        _objects:
+        - {fileID: 0}
+        _selectedTransformInfo:
+        - root: NavLinks
+          path: "Link: SittingOnBed \u2192 Bedroom_Window"
+          scenePath: Assets/GameDomains/Warlord/Zones/Stories/AVAAPA/Scenes/Scene_AVAAPA_LO.unity
+          isActiveObject: 1
+        _hasSavedData: 0
+    - rid: 4735600122383564845
+      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _activeObject: {fileID: 0}
+        _objects:
+        - {fileID: 0}
+        _selectedTransformInfo:
+        - root: NavLinks
+          path: "Link: Bedroom_Hall \u2192 Bedroom_Window"
+          scenePath: Assets/GameDomains/Warlord/Zones/Stories/AVAAPA/Scenes/Scene_AVAAPA_LO.unity
+          isActiveObject: 1
+        _hasSavedData: 0
+    - rid: 4735600122383564846
+      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _activeObject: {fileID: 0}
+        _objects:
+        - {fileID: 0}
+        _selectedTransformInfo:
+        - root: NavLinks
+          path: 'ParentCondition: Cultist Death/View: Apartment_Kitchen_West [Cultist
+            Death - 4]'
+          scenePath: Assets/GameDomains/Warlord/Zones/Playable/PROTO1/Scenes/Scene_PROTO1_LO.unity
+          isActiveObject: 1
+        _hasSavedData: 0
+    - rid: 4735600122383564847
+      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _activeObject: {fileID: 0}
+        _objects:
+        - {fileID: 0}
+        _selectedTransformInfo:
+        - root: NavLinks
+          path: 'ParentCondition: Cultist Death/View: Apartment_Kitchen_East [Cultist
+            Death - 4]'
+          scenePath: Assets/GameDomains/Warlord/Zones/Playable/PROTO1/Scenes/Scene_PROTO1_LO.unity
+          isActiveObject: 1
+        _hasSavedData: 0
+    - rid: 4735600122383564848
+      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _activeObject: {fileID: 0}
+        _objects:
+        - {fileID: 0}
+        _selectedTransformInfo:
+        - root: NavLinks
+          path: 'ParentCondition: Cultist Death/View: Apartment_Living [Cultist Death]'
+          scenePath: Assets/GameDomains/Warlord/Zones/Playable/PROTO1/Scenes/Scene_PROTO1_LO.unity
+          isActiveObject: 1
+        _hasSavedData: 0
+    - rid: 4735600122383564849
+      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _activeObject: {fileID: 0}
+        _objects: []
+        _selectedTransformInfo: []
+        _hasSavedData: 0
+    - rid: 4735600122383564850
+      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _activeObject: {fileID: 0}
+        _objects: []
+        _selectedTransformInfo: []
+        _hasSavedData: 0
+    - rid: 4735600122383564851
+      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _activeObject: {fileID: 0}
+        _objects: []
+        _selectedTransformInfo: []
+        _hasSavedData: 0
+    - rid: 4735600122383564852
+      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _activeObject: {fileID: 0}
+        _objects: []
+        _selectedTransformInfo: []
+        _hasSavedData: 0
+    - rid: 4735600122383564853
+      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _activeObject: {fileID: 0}
+        _objects: []
+        _selectedTransformInfo: []
+        _hasSavedData: 0
+    - rid: 4735600122383564854
+      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _activeObject: {fileID: 0}
+        _objects: []
+        _selectedTransformInfo: []
+        _hasSavedData: 0
+    - rid: 4735600122383564855
+      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _activeObject: {fileID: 0}
+        _objects: []
+        _selectedTransformInfo: []
+        _hasSavedData: 0
+    - rid: 4735600122383564856
+      type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _activeObject: {fileID: 11400000, guid: 9c269b83b76a4425d84245efdc84981e,
+          type: 2}
+        _objects:
+        - {fileID: 11400000, guid: 9c269b83b76a4425d84245efdc84981e, type: 2}
+        _selectedTransformInfo: []
+        _hasSavedData: 1
+    - rid: 4735600122383564857
+      type: {class: ToggleInspectorLockButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data: 
+    - rid: 4735600122383564858
+      type: {class: ToggleActivationHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data: 
+    - rid: 4735600190416748544
+      type: {class: ToggleTimelineLockButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data: 
+    - rid: 8482869020019130661
+      type: {class: MenuItemButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _menuItem: Assets/Create/Warlord/SMS Graph
+    - rid: 8482869020019130667
+      type: {class: MenuItemButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _menuItem: Assets/Create/Warlord/SMS/MessageData
+    - rid: 8482869157546950767
+      type: {class: MenuItemButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _menuItem: Window/NightTools/NightScript/NightScript Graph Editor
