@@ -48,9 +48,7 @@ namespace JoeGatling.ButtonGrids
                 _port.StopBits = StopBits.One;
                 _port.RtsEnable = true;
                 _port.DtrEnable = true;
-
                 _port.NewLine = "\r\n";
-
                 _port.WriteTimeout = 2000;
                 _port.ReadTimeout = 1000;
 
@@ -62,7 +60,6 @@ namespace JoeGatling.ButtonGrids
                 catch (System.Exception e)
                 {
                     Debug.LogError(e.Message);
-
                     _hasConnectionError = true;
                     _port.Close();
                     _port = null;
@@ -71,11 +68,11 @@ namespace JoeGatling.ButtonGrids
                 if (!_hasConnectionError)
                 {
                     _shouldStopThread = false;
-                    
+
                     if (_dataRecieveThread == null || _dataRecieveThread.IsAlive == false)
                     {
                         _dataRecieveThread = new Thread(ReadSerialData);
-                        _dataRecieveThread.IsBackground = true; // Ensure the thread doesn't block application exit
+                        _dataRecieveThread.IsBackground = true;
                         _dataRecieveThread.Start();
                     }
 
@@ -86,25 +83,24 @@ namespace JoeGatling.ButtonGrids
 
         private void Initialize()
         {
-            for(int i = 0; i < height; i++)
+            for (int i = 0; i < height; i++)
             {
                 _buttonStates[i] = 0;
                 _buttonOverrides[i] = 0;
             }
-
             SetAllLeds(false);
         }
 
         public void Disconnect()
         {
             _shouldStopThread = true;
-            
+
             if (_dataRecieveThread != null && _dataRecieveThread.IsAlive)
             {
-                if(!_dataRecieveThread.Join(1000))
+                // Wait up to 1 second for thread to terminate, but do not abort forcibly
+                if (!_dataRecieveThread.Join(1000))
                 {
-                    Debug.LogWarning("Data receive thread did not terminate in time, aborting.");
-                    _dataRecieveThread.Abort();
+                    Debug.LogWarning("Data receive thread did not terminate in time.");
                 }
                 _dataRecieveThread = null;
             }
@@ -127,16 +123,25 @@ namespace JoeGatling.ButtonGrids
                     _port = null;
                 }
             }
-
         }
 
         public void Update()
         {
-            if(isConnected)
+            if (isConnected)
             {
-                if(_serialData != null && _serialData.Length > 0)
+                string serialDataCopy = null;
+                lock (_serialDataLock)
                 {
-                    string[] tokens = _serialData.Split(separators, System.StringSplitOptions.RemoveEmptyEntries);
+                    if (_serialData != null && _serialData.Length > 0)
+                    {
+                        serialDataCopy = _serialData;
+                        _serialData = "";
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(serialDataCopy))
+                {
+                    string[] tokens = serialDataCopy.Split(separators, System.StringSplitOptions.RemoveEmptyEntries);
 
                     if (string.Compare(tokens[0], "/grid/key", System.StringComparison.OrdinalIgnoreCase) == 0)
                     {
@@ -154,18 +159,14 @@ namespace JoeGatling.ButtonGrids
                             }
                         }
                     }
-
-                    _serialData = "";
                 }
 
-
-                if(_isLedStateDirty)
+                if (_isLedStateDirty)
                 {
                     RefreshLedStates();
                 }
             }
         }
-
 
         byte SetBit(ref byte value, int bit, int bitValue)
         {
@@ -201,34 +202,34 @@ namespace JoeGatling.ButtonGrids
         {
             lock (_buttonStateLock)
             {
-                return (GetBit(_buttonStates[y], x) + GetBit(_buttonOverrides[y],x)) > 0;
+                return (GetBit(_buttonStates[y], x) + GetBit(_buttonOverrides[y], x)) > 0;
             }
         }
         public void SetButtonOverride(int x, int y)
         {
             SetBit(ref _buttonOverrides[y], x, 1);
-        }   
+        }
         public void ClearButtonOverride(int x, int y)
         {
             SetBit(ref _buttonOverrides[y], x, 0);
-        }     
+        }
 
         public void ClearAllButtonOverrides(int x, int y)
         {
-            for(int i = 0; i < height; i++)
+            for (int i = 0; i < height; i++)
             {
                 _buttonOverrides[i] = 0;
-            }        
-        }                     
+            }
+        }
 
         public bool GetLed(int x, int y)
         {
-            return GetBit(_ledStates[y], x) == 1 ? true : false; 
+            return GetBit(_ledStates[y], x) == 1 ? true : false;
         }
 
-        public void SetLed(int x, int y, bool state, bool immediate=true)
+        public void SetLed(int x, int y, bool state, bool immediate = true)
         {
-            bool currentLedState = GetLed(x,y);
+            bool currentLedState = GetLed(x, y);
 
             if (currentLedState != state)
             {
@@ -241,15 +242,14 @@ namespace JoeGatling.ButtonGrids
                     _isLedStateDirty = true;
                 }
 
-                SetBit(ref _ledStates[y], x, state ? 1 : 0 );
+                SetBit(ref _ledStates[y], x, state ? 1 : 0);
 
-                onLedStateChanged?.Invoke(new Vector2Int(x,y), state);
+                onLedStateChanged?.Invoke(new Vector2Int(x, y), state);
             }
         }
-        public void SetLed(Vector2Int coords, bool state, bool immediate=true)
-
+        public void SetLed(Vector2Int coords, bool state, bool immediate = true)
         {
-            SetLed(coords.x, coords.y, state);
+            SetLed(coords.x, coords.y, state, immediate);
         }
 
         public void SetAllLeds(bool state)
@@ -271,7 +271,7 @@ namespace JoeGatling.ButtonGrids
 
         public void RefreshLedStates()
         {
-            if(isConnected)
+            if (isConnected)
             {
                 string command = "/grid/led/map 0 0 ";
 
@@ -292,7 +292,7 @@ namespace JoeGatling.ButtonGrids
             {
                 try
                 {
-                    if(_shouldStopThread) break;
+                    if (_shouldStopThread) break;
 
                     if (_port.BytesToRead > 0)
                     {
@@ -310,10 +310,10 @@ namespace JoeGatling.ButtonGrids
                 }
                 catch (System.Exception ex)
                 {
-                    if(!(ex is ThreadAbortException))
+                    if (!(ex is ThreadAbortException))
                     {
                         Debug.LogError($"Exception: {ex.GetType()}");
-                        if(ex.Message.Length > 0)
+                        if (ex.Message.Length > 0)
                         {
                             Debug.LogError(ex.Message);
                         }
