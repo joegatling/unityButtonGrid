@@ -17,7 +17,7 @@ namespace JoeGatling.ButtonGrids
         public event System.Action<Vector2Int, bool> onLedStateChanged = delegate { };
 
         private SerialPort _port = default;
-        private Thread _dataRecieveThread = null;
+        private Thread _dataReceiveThread = null;
         private volatile bool _shouldStopThread = false;
 
         private readonly object _serialDataLock = new object();
@@ -69,11 +69,11 @@ namespace JoeGatling.ButtonGrids
                 {
                     _shouldStopThread = false;
 
-                    if (_dataRecieveThread == null || _dataRecieveThread.IsAlive == false)
+                    if (_dataReceiveThread == null || _dataReceiveThread.IsAlive == false)
                     {
-                        _dataRecieveThread = new Thread(ReadSerialData);
-                        _dataRecieveThread.IsBackground = true;
-                        _dataRecieveThread.Start();
+                        _dataReceiveThread = new Thread(ReadSerialData);
+                        _dataReceiveThread.IsBackground = true;
+                        _dataReceiveThread.Start();
                     }
 
                     Initialize();
@@ -95,14 +95,14 @@ namespace JoeGatling.ButtonGrids
         {
             _shouldStopThread = true;
 
-            if (_dataRecieveThread != null && _dataRecieveThread.IsAlive)
+            if (_dataReceiveThread != null && _dataReceiveThread.IsAlive)
             {
                 // Wait up to 1 second for thread to terminate, but do not abort forcibly
-                if (!_dataRecieveThread.Join(1000))
+                if (!_dataReceiveThread.Join(1000))
                 {
                     Debug.LogWarning("Data receive thread did not terminate in time.");
                 }
-                _dataRecieveThread = null;
+                _dataReceiveThread = null;
             }
 
             if (_port != null)
