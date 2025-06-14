@@ -21,7 +21,6 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
         private double _nextButtonCycleTime = 0;
         private bool _isActive = false;
-        private bool _discardNextRelease = false;
         
         private List<int> _cellWeights = null;
 
@@ -124,7 +123,6 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
             if(state == false)
             {
                 _isActive = true;
-                _discardNextRelease = true;
                 currentPosition = _button.position;
                 _nextButtonCycleTime = UnityEditor.EditorApplication.timeSinceStartup + _buttonCycleTime;
 
@@ -144,8 +142,6 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
                     GridController.overrideLedFunction = null;
                     GridController.overrideButton = null;
                 }
-
-                _discardNextRelease = false;
             }
         }
 
