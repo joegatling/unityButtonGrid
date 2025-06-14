@@ -21,6 +21,9 @@ namespace JoeGatling.ButtonGrids
         private volatile bool _shouldStopThread = false;
 
         private readonly object _serialDataLock = new object();
+        private readonly object _portLock = new object();
+
+
         private string _serialData = "";
 
         private string[] separators = { " " };
@@ -41,43 +44,47 @@ namespace JoeGatling.ButtonGrids
 
             if (IsPortAvailable(portName))
             {
-                _port = new SerialPort(portName);
-                _port.BaudRate = 115200;
-                _port.Parity = Parity.None;
-                _port.DataBits = 8;
-                _port.StopBits = StopBits.One;
-                _port.RtsEnable = true;
-                _port.DtrEnable = true;
-                _port.NewLine = "\r\n";
-                _port.WriteTimeout = 2000;
-                _port.ReadTimeout = 1000;
-
-                try
+                lock (_portLock)
                 {
-                    _port.Open();
-                    _hasConnectionError = false;
-                }
-                catch (System.Exception e)
-                {
-                    Debug.LogError(e.Message);
-                    _hasConnectionError = true;
-                    _port.Close();
-                    _port = null;
-                }
+                    _port = new SerialPort(portName);
+                    _port.BaudRate = 115200;
+                    _port.Parity = Parity.None;
+                    _port.DataBits = 8;
+                    _port.StopBits = StopBits.One;
+                    _port.RtsEnable = true;
+                    _port.DtrEnable = true;
+                    _port.NewLine = "\r\n";
+                    _port.WriteTimeout = 2000;
+                    _port.ReadTimeout = 1000;
 
-                if (!_hasConnectionError)
-                {
-                    _shouldStopThread = false;
-
-                    if (_dataReceiveThread == null || _dataReceiveThread.IsAlive == false)
+                    try
                     {
-                        _dataReceiveThread = new Thread(ReadSerialData);
-                        _dataReceiveThread.IsBackground = true;
-                        _dataReceiveThread.Start();
+                        _port.Open();
+                        _hasConnectionError = false;
+                    }
+                    catch (System.Exception e)
+                    {
+                        Debug.LogError(e.Message);
+                        _hasConnectionError = true;
+                        _port.Close();
+                        _port = null;
                     }
 
-                    Initialize();
+                    if (!_hasConnectionError)
+                    {
+                        _shouldStopThread = false;
+
+                        if (_dataReceiveThread == null || _dataReceiveThread.IsAlive == false)
+                        {
+                            _dataReceiveThread = new Thread(ReadSerialData);
+                            _dataReceiveThread.IsBackground = true;
+                            _dataReceiveThread.Start();
+                        }
+
+                        Initialize();
+                    }
                 }
+                
             }
         }
 
@@ -93,34 +100,37 @@ namespace JoeGatling.ButtonGrids
 
         public void Disconnect()
         {
-            _shouldStopThread = true;
-
-            if (_dataReceiveThread != null && _dataReceiveThread.IsAlive)
+            lock (_portLock)
             {
-                // Wait up to 1 second for thread to terminate, but do not abort forcibly
-                if (!_dataReceiveThread.Join(1000))
-                {
-                    Debug.LogWarning("Data receive thread did not terminate in time.");
-                }
-                _dataReceiveThread = null;
-            }
+                _shouldStopThread = true;
 
-            if (_port != null)
-            {
-                try
+                if (_dataReceiveThread != null && _dataReceiveThread.IsAlive)
                 {
-                    if (_port.IsOpen)
+                    // Wait up to 1 second for thread to terminate, but do not abort forcibly
+                    if (!_dataReceiveThread.Join(1000))
                     {
-                        _port.Close();
+                        Debug.LogWarning("Data receive thread did not terminate in time.");
                     }
+                    _dataReceiveThread = null;
                 }
-                catch (System.Exception e)
+
+                if (_port != null)
                 {
-                    Debug.LogWarning($"Error closing serial port: {e.Message}");
-                }
-                finally
-                {
-                    _port = null;
+                    try
+                    {
+                        if (_port.IsOpen)
+                        {
+                            _port.Close();
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        Debug.LogWarning($"Error closing serial port: {e.Message}");
+                    }
+                    finally
+                    {
+                        _port = null;
+                    }
                 }
             }
         }
@@ -164,6 +174,24 @@ namespace JoeGatling.ButtonGrids
                 if (_isLedStateDirty)
                 {
                     RefreshLedStates();
+                }
+            }
+        }
+
+        void PortWriteLine(string command)
+        {
+            lock (_portLock)
+            {
+                if (_port != null && _port.IsOpen)
+                {
+                    try
+                    {
+                        _port.WriteLine(command);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Debug.LogError($"Error writing to serial port: {e.Message}");
+                    }
                 }
             }
         }
@@ -224,7 +252,10 @@ namespace JoeGatling.ButtonGrids
 
         public bool GetLed(int x, int y)
         {
-            return GetBit(_ledStates[y], x) == 1 ? true : false;
+            lock (_buttonStateLock)
+            {
+                return GetBit(_ledStates[y], x) == 1 ? true : false;
+            }
         }
 
         public void SetLed(int x, int y, bool state, bool immediate = true)
@@ -235,14 +266,17 @@ namespace JoeGatling.ButtonGrids
             {
                 if (isConnected && immediate)
                 {
-                    _port.WriteLine($"/grid/led/set {x} {y} {(state ? 1 : 0)}");
+                    PortWriteLine($"/grid/led/set {x} {y} {(state ? 1 : 0)}");                    
                 }
                 else
                 {
                     _isLedStateDirty = true;
                 }
 
-                SetBit(ref _ledStates[y], x, state ? 1 : 0);
+                lock (_buttonStateLock)
+                {
+                    SetBit(ref _ledStates[y], x, state ? 1 : 0);
+                }
 
                 onLedStateChanged?.Invoke(new Vector2Int(x, y), state);
             }
@@ -254,14 +288,17 @@ namespace JoeGatling.ButtonGrids
 
         public void SetAllLeds(bool state)
         {
-            for (int y = 0; y < 8; y++)
+            lock (_buttonStateLock)
             {
-                _ledStates[y] = (byte)(state ? 255 : 0);
+                for (int y = 0; y < 8; y++)
+                {
+                    _ledStates[y] = (byte)(state ? 255 : 0);
+                }
             }
 
             if (isConnected)
             {
-                _port.WriteLine($"/grid/led/all {(state ? 1 : 0)}");
+                PortWriteLine($"/grid/led/all {(state ? 1 : 0)}");
             }
             else
             {
@@ -275,12 +312,15 @@ namespace JoeGatling.ButtonGrids
             {
                 string command = "/grid/led/map 0 0 ";
 
-                for (int y = 0; y < height; y++)
+                lock (_buttonStateLock)
                 {
-                    command += $"{_ledStates[y]} ";
+                    for (int y = 0; y < height; y++)
+                    {
+                        command += $"{_ledStates[y]} ";
+                    }
                 }
 
-                _port.WriteLine(command);
+                PortWriteLine(command);
 
                 _isLedStateDirty = false;
             }
@@ -290,43 +330,49 @@ namespace JoeGatling.ButtonGrids
         {
             while (!_shouldStopThread && _port != null && _port.IsOpen)
             {
-                try
+                lock(_portLock)
                 {
-                    if (_shouldStopThread) break;
-
-                    if (_port.BytesToRead > 0)
-                    {
-                        string data = _port.ReadLine();
-
-                        lock (_serialDataLock)
-                        {
-                            _serialData = data;
-                        }
-                    }
-                    else
-                    {
-                        Thread.Sleep(10); // Sleep to avoid busy waiting
-                    }
-                }
-                catch (System.Exception ex)
-                {
-                    if (!(ex is ThreadAbortException))
-                    {
-                        Debug.LogError($"Exception: {ex.GetType()}");
-                        if (ex.Message.Length > 0)
-                        {
-                            Debug.LogError(ex.Message);
-                        }
-                    }
-
-                    // Clean up and exit thread
                     try
                     {
-                        _port?.Close();
+                        if (_shouldStopThread) break;
+
+                        if (_port.BytesToRead > 0)
+                        {
+                            string data = _port.ReadLine();
+
+                            lock (_serialDataLock)
+                            {
+                                _serialData = data;
+                            }
+                        }
+                        else
+                        {
+                            // Release lock while sleeping to avoid deadlock
+                            Monitor.Exit(_portLock);
+                            Thread.Sleep(10); // Sleep to avoid busy waiting
+                            Monitor.Enter(_portLock);                            
+                        }
                     }
-                    catch { }
-                    _port = null;
-                    break;
+                    catch (System.Exception ex)
+                    {
+                        if (!(ex is ThreadAbortException))
+                        {
+                            Debug.LogError($"Exception: {ex.GetType()}");
+                            if (ex.Message.Length > 0)
+                            {
+                                Debug.LogError(ex.Message);
+                            }
+                        }
+
+                        // Clean up and exit thread
+                        try
+                        {
+                            _port?.Close();
+                        }
+                        catch { }
+                        _port = null;
+                        break;
+                    }
                 }
             }
         }
