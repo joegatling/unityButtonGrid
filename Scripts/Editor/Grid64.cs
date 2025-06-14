@@ -371,6 +371,7 @@ namespace JoeGatling.ButtonGrids
                         }
                         catch { }
                         _port = null;
+                        _shouldStopThread = true;
                         break;
                     }
                 }
