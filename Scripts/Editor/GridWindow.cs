@@ -76,7 +76,6 @@ namespace JoeGatling.ButtonGrids
             EditorGUILayout.EndHorizontal();
 
             GridController.gridConfig = (GridConfig)EditorGUILayout.ObjectField("Configuration", GridController.gridConfig, typeof(GridConfig), false);
-            //EditorGUILayout.ObjectField("Configuration", GridController.grid, typeof(GridConfig), false);
 
             EditorGUILayout.Space();
 
@@ -196,29 +195,6 @@ namespace JoeGatling.ButtonGrids
                 editor.serializedObject.ApplyModifiedProperties();
 
             }
-
-
-
-
-            // if (GridController.grid.isConnected)
-            // {
-
-            //     EditorGUILayout.Space();
-
-
-
-            //     GUI.color = Color.white;
-            // }
-            // else
-            // {
-            //     if(!string.IsNullOrEmpty(GridController.portName))
-            //     {
-            //         if(GUILayout.Button("Connect"))
-            //         {
-            //             GridController.grid.Connect(GridController.portName);
-            //         }
-            //     }
-            // }
         }
 
 
@@ -232,6 +208,13 @@ namespace JoeGatling.ButtonGrids
 #else
             var ports = SerialPort.GetPortNames().ToList();
 #endif
+
+            if (ports.Count == 0)
+            {
+                menu.AddDisabledItem(new GUIContent("No Serial Ports Found"));
+                menu.ShowAsContext();
+                return;
+            }
 
             for (int i = 0; i < ports.Count; i++)
             {

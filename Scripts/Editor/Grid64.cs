@@ -23,7 +23,6 @@ namespace JoeGatling.ButtonGrids
         private readonly object _serialDataLock = new object();
         private readonly object _portLock = new object();
 
-
         private string _serialData = "";
 
         private string[] separators = { " " };
@@ -64,7 +63,7 @@ namespace JoeGatling.ButtonGrids
                     }
                     catch (System.Exception e)
                     {
-                        Debug.LogError(e.Message);
+                        MainThreadDispatcher.RunOnMainThread(() => Debug.LogError(e.Message));
                         _hasConnectionError = true;
                         _port.Close();
                         _port = null;
@@ -109,7 +108,7 @@ namespace JoeGatling.ButtonGrids
                     // Wait up to 1 second for thread to terminate, but do not abort forcibly
                     if (!_dataReceiveThread.Join(1000))
                     {
-                        Debug.LogWarning("Data receive thread did not terminate in time.");
+                        MainThreadDispatcher.RunOnMainThread(() => Debug.LogWarning("Data receive thread did not terminate in time."));
                     }
                     _dataReceiveThread = null;
                 }
@@ -125,7 +124,7 @@ namespace JoeGatling.ButtonGrids
                     }
                     catch (System.Exception e)
                     {
-                        Debug.LogWarning($"Error closing serial port: {e.Message}");
+                        MainThreadDispatcher.RunOnMainThread(() => Debug.LogWarning($"Error closing serial port: {e.Message}"));
                     }
                     finally
                     {
@@ -190,7 +189,7 @@ namespace JoeGatling.ButtonGrids
                     }
                     catch (System.Exception e)
                     {
-                        Debug.LogError($"Error writing to serial port: {e.Message}");
+                        MainThreadDispatcher.RunOnMainThread(() => Debug.LogError($"Error writing to serial port: {e.Message}"));
                     }
                 }
             }
@@ -357,10 +356,10 @@ namespace JoeGatling.ButtonGrids
                     {
                         if (!(ex is ThreadAbortException))
                         {
-                            Debug.LogError($"Exception: {ex.GetType()}");
+                            MainThreadDispatcher.RunOnMainThread(() => Debug.LogError($"Exception: {ex.GetType()}"));
                             if (ex.Message.Length > 0)
                             {
-                                Debug.LogError(ex.Message);
+                                MainThreadDispatcher.RunOnMainThread(() => Debug.LogError(ex.Message));
                             }
                         }
 
