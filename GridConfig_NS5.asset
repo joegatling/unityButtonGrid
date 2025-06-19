@@ -53,8 +53,8 @@ MonoBehaviour:
   - rid: -2
   - rid: -2
   - rid: -2
-  - rid: -2
-  - rid: -2
+  - rid: 5399164320242991231
+  - rid: 5399164320242991232
   - rid: -2
   - rid: -2
   - rid: -2
@@ -67,14 +67,14 @@ MonoBehaviour:
   - rid: -2
   - rid: -2
   - rid: 8482869157546950767
+  - rid: 5399164256993935668
+  - rid: -2
+  - rid: 5399164187638759541
+  - rid: 5399164187638759542
+  - rid: 5399164187638759543
   - rid: -2
   - rid: -2
-  - rid: -2
-  - rid: -2
-  - rid: -2
-  - rid: -2
-  - rid: -2
-  - rid: -2
+  - rid: 5399164366281506971
   - rid: 4735600122383564858
   - rid: 4735600122383564857
   references:
@@ -103,7 +103,7 @@ MonoBehaviour:
       type: {class: CopyWorldTransformButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
         asm: JoeGatling.ButtonGrids}
       data:
-        _operationType: 2
+        _operationType: 1
     - rid: 4735600122383564831
       type: {class: ToggleGizmosHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
         asm: JoeGatling.ButtonGrids}
@@ -148,8 +148,8 @@ MonoBehaviour:
       type: {class: SaveSceneButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
         asm: JoeGatling.ButtonGrids}
       data:
-        _position: {x: 0, y: 0, z: 0}
-        _rotation: {x: 0, y: 0, z: 0}
+        _position: {x: 2.4775102, y: 3.0439959, z: -2.3693273}
+        _rotation: {x: 89.58788, y: 89.19522, z: 180.36765}
         _orthographic: 0
         _hasSavedData: 0
     - rid: 4735600122383564838
@@ -184,8 +184,9 @@ MonoBehaviour:
         _objects:
         - {fileID: 0}
         _selectedTransformInfo:
-        - root: 'Parent Condition: In [AVAAPA]'
-          path: SMS
+        - root: NavLinks
+          path: "ParentCondition: Returning To Apartment/Link: Hallway_Backward \u2192
+            AttackInApartment"
           scenePath: Assets/GameDomains/Warlord/Zones/Stories/AVAAPA/Scenes/Scene_AVAAPA_LO.unity
           isActiveObject: 1
         _hasSavedData: 1
@@ -197,9 +198,9 @@ MonoBehaviour:
         _objects:
         - {fileID: 0}
         _selectedTransformInfo:
-        - root: NavNodes
-          path: 'Node: ReenteredApt [Before Attack]'
-          scenePath: Assets/GameDomains/Warlord/Zones/Stories/AVAAPA/Scenes/Scene_AVAAPA_LO.unity
+        - root: Characters
+          path: Prefab_PlayerArms
+          scenePath: Assets/GameDomains/Warlord/Zones/Stories/GLOBAL/Scenes/Scene_GLOBAL_LO.unity
           isActiveObject: 1
         _hasSavedData: 1
     - rid: 4735600122383564843
@@ -214,7 +215,7 @@ MonoBehaviour:
           path: 'Node: ReenteredApt [Before Attack]/Prefab_MarkerCamera'
           scenePath: Assets/GameDomains/Warlord/Zones/Stories/AVAAPA/Scenes/Scene_AVAAPA_LO.unity
           isActiveObject: 1
-        _hasSavedData: 1
+        _hasSavedData: 0
     - rid: 4735600122383564844
       type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
         asm: JoeGatling.ButtonGrids}
@@ -286,8 +287,10 @@ MonoBehaviour:
       type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
         asm: JoeGatling.ButtonGrids}
       data:
-        _activeObject: {fileID: 0}
-        _objects: []
+        _activeObject: {fileID: 102900000, guid: 8e455981fc2ec4bacbd7b719037a4c94,
+          type: 3}
+        _objects:
+        - {fileID: 102900000, guid: 8e455981fc2ec4bacbd7b719037a4c94, type: 3}
         _selectedTransformInfo: []
         _hasSavedData: 0
     - rid: 4735600122383564850
@@ -342,10 +345,10 @@ MonoBehaviour:
       type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
         asm: JoeGatling.ButtonGrids}
       data:
-        _activeObject: {fileID: 11400000, guid: 9c269b83b76a4425d84245efdc84981e,
-          type: 2}
+        _activeObject: {fileID: 102900000, guid: 91e9e222daf8c498880eef487c6da9b0,
+          type: 3}
         _objects:
-        - {fileID: 11400000, guid: 9c269b83b76a4425d84245efdc84981e, type: 2}
+        - {fileID: 102900000, guid: 91e9e222daf8c498880eef487c6da9b0, type: 3}
         _selectedTransformInfo: []
         _hasSavedData: 1
     - rid: 4735600122383564857
@@ -360,6 +363,41 @@ MonoBehaviour:
       type: {class: ToggleTimelineLockButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
         asm: JoeGatling.ButtonGrids}
       data: 
+    - rid: 5399164187638759541
+      type: {class: AdjustTimeScaleButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _adjustment: 1
+    - rid: 5399164187638759542
+      type: {class: AdjustTimeScaleButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _adjustment: 0
+    - rid: 5399164187638759543
+      type: {class: AdjustTimeScaleButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _adjustment: 2
+    - rid: 5399164256993935668
+      type: {class: MenuItemButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _menuItem: Window/NightTools/Warlord/Sms Graph Editor
+    - rid: 5399164320242991231
+      type: {class: MenuItemButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _menuItem: Assets/Find References In Project
+    - rid: 5399164320242991232
+      type: {class: MenuItemButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _menuItem: Assets/Find References In Scene
+    - rid: 5399164366281506971
+      type: {class: ScreenSaverButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
+        asm: JoeGatling.ButtonGrids}
+      data:
+        _buttonCycleTime: 0.1
     - rid: 8482869020019130661
       type: {class: MenuItemButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
         asm: JoeGatling.ButtonGrids}
