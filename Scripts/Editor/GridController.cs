@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEditor.Compilation;
 using UnityEngine;
 using JoeGatling.ButtonGrids.ButtonHandlers;
 using JoeGatling.ButtonGrids.LedFunctions;
@@ -88,7 +89,10 @@ namespace JoeGatling.ButtonGrids
         static GridController()
         {
             EditorApplication.update += Update;
+            EditorApplication.quitting += OnEditorQuitting;
+            AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
 
+            
             grid = new Grid64();
             if (portName != null && grid.IsPortAvailable(portName))
             {
