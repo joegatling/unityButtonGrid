@@ -180,15 +180,11 @@ MonoBehaviour:
       type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
         asm: JoeGatling.ButtonGrids}
       data:
-        _activeObject: {fileID: 0}
+        _activeObject: {fileID: 102900000, guid: 8e455981fc2ec4bacbd7b719037a4c94,
+          type: 3}
         _objects:
-        - {fileID: 0}
-        _selectedTransformInfo:
-        - root: NavLinks
-          path: "ParentCondition: Returning To Apartment/Link: Hallway_Backward \u2192
-            AttackInApartment"
-          scenePath: Assets/GameDomains/Warlord/Zones/Stories/AVAAPA/Scenes/Scene_AVAAPA_LO.unity
-          isActiveObject: 1
+        - {fileID: 102900000, guid: 8e455981fc2ec4bacbd7b719037a4c94, type: 3}
+        _selectedTransformInfo: []
         _hasSavedData: 1
     - rid: 4735600122383564842
       type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
@@ -207,15 +203,12 @@ MonoBehaviour:
       type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
         asm: JoeGatling.ButtonGrids}
       data:
-        _activeObject: {fileID: 0}
+        _activeObject: {fileID: 11400000, guid: 04c0f582cd0a347ecbe7abede2ed2c92,
+          type: 2}
         _objects:
-        - {fileID: 0}
-        _selectedTransformInfo:
-        - root: NavNodes
-          path: 'Node: ReenteredApt [Before Attack]/Prefab_MarkerCamera'
-          scenePath: Assets/GameDomains/Warlord/Zones/Stories/AVAAPA/Scenes/Scene_AVAAPA_LO.unity
-          isActiveObject: 1
-        _hasSavedData: 0
+        - {fileID: 11400000, guid: 04c0f582cd0a347ecbe7abede2ed2c92, type: 2}
+        _selectedTransformInfo: []
+        _hasSavedData: 1
     - rid: 4735600122383564844
       type: {class: SaveSelectionButtonHandler, ns: JoeGatling.ButtonGrids.ButtonHandlers,
         asm: JoeGatling.ButtonGrids}
