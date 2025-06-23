@@ -18,7 +18,7 @@ namespace JoeGatling.ButtonGrids
 
         private SerialPort _port = default;
         private Thread _dataReceiveThread = null;
-        private volatile bool _shouldStopThread = false;
+        private CancellationTokenSource _cancellationTokenSource;
 
         private readonly object _serialDataLock = new object();
         private readonly object _portLock = new object();
@@ -71,11 +71,11 @@ namespace JoeGatling.ButtonGrids
 
                     if (!_hasConnectionError)
                     {
-                        _shouldStopThread = false;
-
                         if (_dataReceiveThread == null || _dataReceiveThread.IsAlive == false)
                         {
-                            _dataReceiveThread = new Thread(ReadSerialData);
+                            _cancellationTokenSource = new CancellationTokenSource();
+
+                            _dataReceiveThread = new Thread(() => ReadSerialData(_cancellationTokenSource.Token));
                             _dataReceiveThread.IsBackground = true;
                             _dataReceiveThread.Start();
                         }
@@ -99,20 +99,20 @@ namespace JoeGatling.ButtonGrids
 
         public void Disconnect()
         {
+            _cancellationTokenSource?.Cancel();
+
+            if (_dataReceiveThread != null && _dataReceiveThread.IsAlive)
+            {
+                // Wait for the thread to finish
+                if (!_dataReceiveThread.Join(2000))
+                {
+                    MainThreadDispatcher.RunOnMainThread(() => Debug.LogWarning("Data receive thread did not terminate in time."));
+                }
+                _dataReceiveThread = null;
+            }
+
             lock (_portLock)
             {
-                _shouldStopThread = true;
-
-                if (_dataReceiveThread != null && _dataReceiveThread.IsAlive)
-                {
-                    // Wait up to 1 second for thread to terminate, but do not abort forcibly
-                    if (!_dataReceiveThread.Join(1000))
-                    {
-                        MainThreadDispatcher.RunOnMainThread(() => Debug.LogWarning("Data receive thread did not terminate in time."));
-                    }
-                    _dataReceiveThread = null;
-                }
-
                 if (_port != null)
                 {
                     try
@@ -132,6 +132,9 @@ namespace JoeGatling.ButtonGrids
                     }
                 }
             }
+
+            _cancellationTokenSource?.Dispose();
+            _cancellationTokenSource = null;
         }
 
         public void Update()
@@ -325,15 +328,18 @@ namespace JoeGatling.ButtonGrids
             }
         }
 
-        private void ReadSerialData()
+        private void ReadSerialData(CancellationToken cancellationToken)
         {
-            while (!_shouldStopThread && _port != null && _port.IsOpen)
+            while (!cancellationToken.IsCancellationRequested)
             {
-                lock(_portLock)
+                try
                 {
-                    try
+                    lock (_portLock)
                     {
-                        if (_shouldStopThread) break;
+                        if (cancellationToken.IsCancellationRequested || _port == null || !_port.IsOpen)
+                        {
+                            break;
+                        }
 
                         if (_port.BytesToRead > 0)
                         {
@@ -344,35 +350,40 @@ namespace JoeGatling.ButtonGrids
                                 _serialData = data;
                             }
                         }
-                        else
+                    }
+
+                    cancellationToken.WaitHandle.WaitOne(10); // Wait for a short time to avoid busy waiting                    
+                }
+                catch (System.Exception ex)
+                {
+                    if (!(ex is ThreadAbortException) && !(ex is System.OperationCanceledException))
+                    {
+                        MainThreadDispatcher.RunOnMainThread(() => Debug.LogError($"Exception: {ex.GetType()}"));
+                        if (ex.Message.Length > 0)
                         {
-                            // Release lock while sleeping to avoid deadlock
-                            Monitor.Exit(_portLock);
-                            Thread.Sleep(10); // Sleep to avoid busy waiting
-                            Monitor.Enter(_portLock);                            
+                            MainThreadDispatcher.RunOnMainThread(() => Debug.LogError(ex.Message));
                         }
                     }
-                    catch (System.Exception ex)
+
+                    // Clean up and exit thread
+                    lock (_portLock)
                     {
-                        if (!(ex is ThreadAbortException))
+                        if (_port != null && _port.IsOpen)
                         {
-                            MainThreadDispatcher.RunOnMainThread(() => Debug.LogError($"Exception: {ex.GetType()}"));
-                            if (ex.Message.Length > 0)
+                            try
                             {
-                                MainThreadDispatcher.RunOnMainThread(() => Debug.LogError(ex.Message));
+                                _port.Close();
+                            }
+                            catch (System.Exception e)
+                            {
+                                MainThreadDispatcher.RunOnMainThread(() => Debug.LogWarning($"Error closing serial port: {e.Message}"));
                             }
                         }
 
-                        // Clean up and exit thread
-                        try
-                        {
-                            _port?.Close();
-                        }
-                        catch { }
                         _port = null;
-                        _shouldStopThread = true;
-                        break;
                     }
+
+                    break;  
                 }
             }
         }
