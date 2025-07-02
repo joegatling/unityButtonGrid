@@ -97,5 +97,10 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
                 }
             }
         }
+
+        public string GetShortName()
+        {
+            return "CWT";
+        }
     }
 }

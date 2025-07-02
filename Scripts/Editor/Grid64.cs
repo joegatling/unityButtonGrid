@@ -5,6 +5,7 @@ using System.IO.Ports;
 using System.Text;
 using System.Threading;
 using UnityEditor;
+using System.IO;
 
 namespace JoeGatling.ButtonGrids
 {
@@ -356,6 +357,12 @@ namespace JoeGatling.ButtonGrids
                 }
                 catch (System.Exception ex)
                 {
+                    if((ex is IOException ioEx) && ioEx.Message.Contains("The port is closed"))
+                    {
+                        MainThreadDispatcher.RunOnMainThread(() => Debug.LogWarning("Serial port is closed."));
+                        Disconnect();
+                        break;
+                    }
                     if (!(ex is ThreadAbortException) && !(ex is System.OperationCanceledException))
                     {
                         MainThreadDispatcher.RunOnMainThread(() => Debug.LogError($"Exception: {ex.GetType()}"));

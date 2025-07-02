@@ -22,6 +22,11 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
         ButtonGrids.LedFunctions.ILedFunction _defaultLedFunction = null;
 
+        public string GetShortName()
+        {
+            return "Gizmos";
+        }
+
         public void Initialize(GlowingButton button)
         {
             Teardown();

@@ -5,7 +5,6 @@ using UnityEditor;
 using UnityEngine;
 using System.Linq;
 using UnityEditor.Timeline;
-using UnityEngine.Timeline;
 
 namespace JoeGatling.ButtonGrids.ButtonHandlers
 {    
@@ -17,6 +16,11 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
         private GlowingButton _button = null;
 
         ButtonGrids.LedFunctions.ILedFunction _defaultLedFunction = null;
+
+        public string GetShortName()
+        {
+            return "TL\nLock";
+        }
 
         public void Initialize(GlowingButton button)
         {

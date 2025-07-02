@@ -51,5 +51,10 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
                 _button.ledFunction = _flashingLedFunction;
             }
         }
+
+        public string GetShortName()
+        {
+            return "Test";
+        }
     }
 }

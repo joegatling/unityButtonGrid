@@ -9,7 +9,12 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
     [HandlerName("Play Mode/Toggle Play Mode")]
     public class TogglePlayButtonHandler : IButtonHandler
     {
-        private GlowingButton _button = null;        
+        private GlowingButton _button = null;
+
+        public string GetShortName()
+        {
+            return "Play";
+        }
 
         public void Initialize(GlowingButton button)
         {

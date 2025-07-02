@@ -142,7 +142,12 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
                     UnityEditor.EditorWindow.FocusWindowIfItsOpen(_focusedWindowType);
                 }
             }
-        }        
+        }
+
+        public string GetShortName()
+        {
+            return "Focus";
+        }
     }
 
 
