@@ -9,7 +9,12 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
     [HandlerName("Scene View/Align To Main Camera")]
     public class AlignSceneViewToMainCameraButtonHandler : IButtonHandler
     {
-        private GlowingButton _button = null;        
+        private GlowingButton _button = null;
+
+        public string GetShortName()
+        {
+            return "Cam\nAlign";
+        }
 
         public void Initialize(GlowingButton button)
         {

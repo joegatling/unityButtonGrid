@@ -14,6 +14,11 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
         ButtonGrids.LedFunctions.ILedFunction _defaultLedFunction = null;
 
+        public string GetShortName()
+        {
+            return "Insp\nLock";
+        }
+
         public void Initialize(GlowingButton button)
         {
             Teardown();

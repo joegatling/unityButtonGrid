@@ -9,7 +9,12 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
     [HandlerName("Play Mode/Step Frame")]
     public class StepButtonHandler : IButtonHandler
     {
-        private GlowingButton _button = null;        
+        private GlowingButton _button = null;
+
+        public string GetShortName()
+        {
+            return "Step";
+        }
 
         public void Initialize(GlowingButton button)
         {

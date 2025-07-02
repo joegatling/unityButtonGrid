@@ -10,5 +10,6 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
         void Initialize(GlowingButton button);
         void Teardown();
         void Update();
+        string GetShortName();
     }
 }

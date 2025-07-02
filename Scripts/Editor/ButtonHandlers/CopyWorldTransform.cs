@@ -118,5 +118,10 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
         }
 
         public bool HasStoredData => _hasCopiedData && (_operationType == OperationType.Paste || _operationType == OperationType.PasteOnce);
+
+        public string GetShortName()
+        {
+            return "CWT";
+        }
     }
 }

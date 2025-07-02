@@ -16,6 +16,11 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
 
         private bool isWindowMaximized => UnityEditor.EditorWindow.focusedWindow != null && UnityEditor.EditorWindow.focusedWindow.maximized == true;
 
+        public string GetShortName()
+        {
+            return "Max";
+        }
+
         public void Initialize(GlowingButton button)        
         {
             _button = button;

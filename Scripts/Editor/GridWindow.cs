@@ -79,7 +79,11 @@ namespace JoeGatling.ButtonGrids
 
             EditorGUILayout.Space();
 
-            if(GridController.gridConfig != null)
+            // get a square rect
+            Rect totalRect = GUILayoutUtility.GetRect(1, 1, GUILayout.ExpandWidth(true));
+            totalRect.height = totalRect.width;
+
+            if (GridController.gridConfig != null)
             {
                 for (int y = 7; y >= 0; y--)
                 {
@@ -105,7 +109,7 @@ namespace JoeGatling.ButtonGrids
                             }
                         }
 
-                        if(buttonHandler == null)
+                        if (buttonHandler == null)
                         {
                             brightness *= 0.75f;
                         }
@@ -118,24 +122,33 @@ namespace JoeGatling.ButtonGrids
 
                         GUI.color = Color.Lerp(Color.black, baseColor, brightness);
 
-                       
 
-                        float width = Screen.width / EditorGUIUtility.pixelsPerPoint;                       
 
-                        string typeDescription = buttonHandler != null ? buttonHandler.GetType().Name: "None";
+                        float width = Screen.width / EditorGUIUtility.pixelsPerPoint;
+
+                        string typeDescription = buttonHandler != null ? buttonHandler.GetType().Name : "None";
+                        string shortName = buttonHandler != null ? buttonHandler.GetShortName() : "";
 
                         string textToRemove = "ButtonHandler";
-                        if(typeDescription.EndsWith(textToRemove))
+                        if (typeDescription.EndsWith(textToRemove))
                         {
                             typeDescription = typeDescription.Substring(0, typeDescription.Length - textToRemove.Length);
                         }
 
-                        GUIContent buttonContent = new GUIContent("", ObjectNames.NicifyVariableName(typeDescription));
+                        GUIContent buttonContent = new GUIContent(shortName, ObjectNames.NicifyVariableName(typeDescription));
 
-                        if (GUILayout.Button(buttonContent, GUILayout.Height(width / 8)))
+                        if (GUILayout.Button(buttonContent, GUILayout.Height(width / 8), GUILayout.Width(width / 8)))
                         {
-                            //ShowButtonHandlerTypeMenu(x,y);
-                            _selectedButton = new Vector2Int(x, y);
+                            if(Event.current.button == 1)
+                            {
+                                _selectedButton = new Vector2Int(x, y);
+                                ShowButtonHandlerTypeMenu(x, y);
+                            }
+                            else if(Event.current.button == 0)
+                            {
+                                // Left click to select button
+                                _selectedButton = new Vector2Int(x, y);
+                            }
                         }
 
 

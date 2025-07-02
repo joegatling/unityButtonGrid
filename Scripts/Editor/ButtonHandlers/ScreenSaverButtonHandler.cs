@@ -162,6 +162,11 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
         {
             _cellWeights[coordinate.y * GridController.grid.width + coordinate.x] = value; ;
         }
+
+        public string GetShortName()
+        {
+            return "Scrn";
+        }
     }
 
     public class ScreenSaverLedFunction : ILedFunction

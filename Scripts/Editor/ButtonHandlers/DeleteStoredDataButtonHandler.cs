@@ -98,7 +98,11 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
                     __allDeleters[i].OnDeleteStateChanged(false);
                 }
             }
-        }        
+        }
 
+        public string GetShortName()
+        {
+            return "Del"; 
+        }
     }
 }
