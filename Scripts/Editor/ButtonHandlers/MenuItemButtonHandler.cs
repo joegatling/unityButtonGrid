@@ -44,6 +44,8 @@ namespace JoeGatling.ButtonGrids.ButtonHandlers
             }
         }
 
+        public string GetShortName() => "Menu";
+
         protected void OnButtonStateChanged(bool state)
         {
             if(state == true && _menuItem != "")

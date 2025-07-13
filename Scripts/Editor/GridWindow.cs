@@ -137,7 +137,9 @@ namespace JoeGatling.ButtonGrids
 
                         GUIContent buttonContent = new GUIContent(shortName, ObjectNames.NicifyVariableName(typeDescription));
 
-                        if (GUILayout.Button(buttonContent, GUILayout.Height(width / 8), GUILayout.Width(width / 8)))
+                        float size = (width / 8) - 7;
+                        
+                        if (GUILayout.Button(buttonContent, GUILayout.Height(size), GUILayout.Width(size)))
                         {
                             if(Event.current.button == 1)
                             {
