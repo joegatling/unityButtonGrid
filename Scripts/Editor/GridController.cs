@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.Compilation;
 using UnityEngine;
 using JoeGatling.ButtonGrids.ButtonHandlers;
 using JoeGatling.ButtonGrids.LedFunctions;
@@ -85,14 +83,17 @@ namespace JoeGatling.ButtonGrids
 
         public static GlowingButton overrideButton { get; set; }
 
+        private static GridGameOfLife _gameOfLife = null;
+
 
         static GridController()
         {
             EditorApplication.update += Update;
             EditorApplication.quitting += OnEditorQuitting;
+            EditorApplication.focusChanged += OnFocusChanged;
             AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
 
-            
+
             grid = new Grid64();
             if (portName != null && grid.IsPortAvailable(portName))
             {
@@ -102,16 +103,44 @@ namespace JoeGatling.ButtonGrids
             grid.onButtonStateChanged += OnButtonStateChanged;
 
             _wasPlaying = EditorApplication.isPlaying;
-            
-            for(int y = 0; y < grid.height; y++)
+
+            for (int y = 0; y < grid.height; y++)
             {
-                for(int x = 0; x < grid.width; x++)
+                for (int x = 0; x < grid.width; x++)
                 {
-                    _buttons.Add(new GlowingButton(x,y));
-                }                
+                    _buttons.Add(new GlowingButton(x, y));
+                }
             }
 
             InitializeAllButtonsHandlers();
+        }
+
+        private static void OnFocusChanged(bool isFocused)
+        {
+            if (gridConfig.showScreensaverOnFocusLost)
+            {
+                if (isFocused)
+                {
+                    overrideLedFunction = null;
+                    overrideButton = null;
+
+                    //destroy the game of life if it exists
+                    if (_gameOfLife != null)
+                    {
+                        _gameOfLife = null;
+                    }
+
+
+                }
+                    else
+                    {
+                        _gameOfLife = new GridGameOfLife(grid.width, grid.height);
+                        overrideLedFunction = new GameOfLifeLedFunction(_gameOfLife);
+                        overrideButton = new GlowingButton(0, 0);
+                    }
+
+                _wasPlaying = EditorApplication.isPlaying;
+            }
         }
 
         private static void OnEditorQuitting()

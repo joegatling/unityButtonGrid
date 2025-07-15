@@ -9,6 +9,10 @@ namespace JoeGatling.ButtonGrids
     public class GridConfig : ScriptableObject
     {
         [SerializeReference] private List<IButtonHandler> _handlers = new List<IButtonHandler>();
+        
+        [SerializeField] private bool _showScreensaverOnFocusLost = true;
+
+        public bool showScreensaverOnFocusLost => _showScreensaverOnFocusLost;
 
         public int GridCoordsToIndex(int x, int y)
         {

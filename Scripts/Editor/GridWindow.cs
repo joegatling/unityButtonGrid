@@ -207,6 +207,13 @@ namespace JoeGatling.ButtonGrids
                     GridController.grid.ClearButtonOverride(_selectedButton.x, _selectedButton.y);
                 }
 
+                GUILayout.Space(10);
+                GUILayout.Label("Settings", EditorStyles.boldLabel);
+                //GridController.gridConfig._showScreensaverOnFocusLost = EditorGUILayout.Toggle("Show Screensaver on Focus Lost", GridController.gridConfig._showScreensaverOnFocusLost);
+
+                SerializedProperty screensaverProp = editor.serializedObject.FindProperty("_showScreensaverOnFocusLost");
+                screensaverProp.boolValue = EditorGUILayout.ToggleLeft("Show Screensaver on Focus Lost", screensaverProp.boolValue);
+
                 editor.serializedObject.ApplyModifiedProperties();
 
             }
