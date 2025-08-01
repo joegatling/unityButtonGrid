@@ -11,7 +11,7 @@ namespace JoeGatling.ButtonGrids
         private bool[,] _cells;
 
         private double _nextUpdateTime = 0;
-        private const double UpdateInterval = 3.0; // Update every second
+        private const double UpdateInterval = 0.5f; // Update every second
 
         public GridGameOfLife(int width, int height)
         {
